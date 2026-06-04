@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   RIMAK NIGERIA LIMITED — GLOBAL STYLES
+   ============================================ */
+
+:root {
+  --navy: #0A1628;
+  --navy-deep: #060D1A;
+  --concrete: #C4B8A8;
+  --concrete-light: #D8CFC3;
+  --gold: #D4861A;
+  --gold-light: #E8A040;
+  --cream: #F5F2EE;
+  --white: #FFFFFF;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* lenis handles this */
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--navy-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Noise texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+  mix-blend-mode: overlay;
+}
+
+/* Lenis smooth scroll */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.section-padding {
+  @apply px-6 md:px-12 lg:px-20 xl:px-28;
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-concrete {
+  background: linear-gradient(135deg, var(--concrete) 0%, var(--concrete-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass-card {
+  background: rgba(10, 22, 40, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(196, 184, 168, 0.12);
+}
+
+.gold-border {
+  border: 1px solid rgba(212, 134, 26, 0.3);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+
+::selection {
+  background: var(--gold);
+  color: var(--navy-deep);
+}
+
+/* ============================================
+   CANVAS
+   ============================================ */
+
+canvas {
+  display: block;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 134, 26, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* ============================================
+   GSAP INITIAL STATES
+   ============================================ */
+
+.gsap-hidden {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.split-char {
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* ============================================
+   HORIZONTAL SCROLL CONTAINER
+   ============================================ */
+
+.horizontal-track {
+  display: flex;
+  will-change: transform;
+}
+
+/* ============================================
+   SECTION BASE
+   ============================================ */
+
+.section-base {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ============================================
+   GOLD LINE DIVIDER
+   ============================================ */
+
+.gold-line {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 2px;
+}
+
+/* ============================================
+   COUNTER ANIMATION
+   ============================================ */
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 6rem);
+  color: var(--gold);
+  line-height: 1;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+
+.form-field {
+  position: relative;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+  background: rgba(10, 22, 40, 0.8);
+  border: 1px solid rgba(196, 184, 168, 0.2);
+  border-radius: 4px;
+  padding: 16px 20px;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 134, 26, 0.1);
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--concrete);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(212, 134, 26, 0.4);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 34px;
+  background: transparent;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  border: 1px solid rgba(245, 242, 238, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
