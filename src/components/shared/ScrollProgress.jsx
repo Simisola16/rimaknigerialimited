@@ -19,7 +19,7 @@ export default function ScrollProgress() {
       <motion.div
         className="h-full origin-left"
         style={{
-          background: 'linear-gradient(90deg, #D4861A, #E8A040)',
+          background: 'linear-gradient(90deg, #330099, #00CCFF)',
           scaleX: progress / 100,
           transformOrigin: 'left',
         }}

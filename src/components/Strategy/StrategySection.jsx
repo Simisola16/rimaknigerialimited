@@ -51,12 +51,12 @@ export default function StrategySection() {
         },
       })
 
-      // Animate each step in sequence
+      // Animate each step in sequence with a clean slide-scale transition
       stepRefs.current.forEach((step, i) => {
         if (!step) return
         tl.fromTo(step,
-          { opacity: 0, x: 80 },
-          { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' },
+          { opacity: 0, x: 60, scale: 0.97 },
+          { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: 'power2.out' },
           i * 0.8
         )
       })
@@ -66,14 +66,15 @@ export default function StrategySection() {
     })
 
     mm.add("(max-width: 1023px)", () => {
-      // Mobile animation: animate steps in as they scroll into view individually (no pinning)
+      // Mobile animation: animate steps with scale + fade as they scroll into view
       stepRefs.current.forEach((step) => {
         if (!step) return
         gsap.fromTo(step,
-          { opacity: 0, y: 40 },
+          { opacity: 0, y: 30, scale: 0.97 },
           {
             opacity: 1,
             y: 0,
+            scale: 1,
             duration: 0.8,
             ease: 'power3.out',
             scrollTrigger: {
@@ -90,22 +91,22 @@ export default function StrategySection() {
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} id="strategy" className="relative bg-[#0A1628] overflow-hidden min-h-screen">
+    <section ref={sectionRef} id="strategy" className="relative bg-[#0D0524] overflow-hidden min-h-screen">
       {/* Animated gradient background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A1628] via-[#0A1628] to-[#060D1A]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0D0524] via-[#0D0524] to-[#060214]" />
         <div
           className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #D4861A 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, #00CCFF 0%, transparent 70%)' }}
         />
         <div
-          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-5"
-          style={{ background: 'radial-gradient(circle, #C4B8A8 0%, transparent 70%)' }}
+          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10"
+          style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }}
         />
         {/* Structural lines */}
         <div className="absolute inset-0 opacity-5"
           style={{
-            backgroundImage: 'repeating-linear-gradient(90deg, #D4861A 0, #D4861A 1px, transparent 0, transparent 120px)',
+            backgroundImage: 'repeating-linear-gradient(90deg, #00CCFF 0, #00CCFF 1px, transparent 0, transparent 120px)',
           }}
         />
       </div>
@@ -114,22 +115,22 @@ export default function StrategySection() {
         {/* Left: Pinned header */}
         <div ref={headerRef} className="lg:sticky lg:top-24 lg:w-[40%] flex-shrink-0">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-display text-[#D4861A] text-sm tracking-[0.3em]">STRATEGY</span>
+            <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">STRATEGY</span>
             <div className="gold-line" />
           </div>
-          <h2 className="font-display text-[clamp(2.5rem,5vw,5rem)] text-[#F5F2EE] leading-none mb-6">
+          <h2 className="font-display text-[clamp(2.5rem,5vw,5rem)] text-[#FFFFFF] leading-none mb-6">
             OPERATIONAL<br />
             <span className="text-gradient-gold">EXCELLENCE</span>
           </h2>
-          <p className="font-body text-[#C4B8A8] text-[1rem] leading-relaxed max-w-sm">
+          <p className="font-body text-[#E4F3F7] text-[1rem] leading-relaxed max-w-sm">
             Our three-pillar operational strategy ensures every project is defined, executed, and reported with the precision of an international engineering firm.
           </p>
 
           {/* Decorative architectural element */}
           <div className="mt-12 relative w-32 h-32">
-            <div className="absolute inset-0 border border-[#D4861A]/30 rotate-45" />
-            <div className="absolute inset-[16px] border border-[#D4861A]/20 rotate-45" />
-            <div className="absolute inset-[32px] bg-[#D4861A]/10 rotate-45" />
+            <div className="absolute inset-0 border border-[#00CCFF]/20 rotate-45" />
+            <div className="absolute inset-[16px] border border-[#00CCFF]/10 rotate-45" />
+            <div className="absolute inset-[32px] bg-[#00CCFF]/5 rotate-45" />
           </div>
         </div>
 
@@ -142,26 +143,26 @@ export default function StrategySection() {
               className="glass-card gold-border rounded-sm p-8 relative overflow-hidden group opacity-0"
             >
               {/* Step number */}
-              <div className="absolute -right-4 -top-4 font-display text-8xl text-[#D4861A]/10 leading-none select-none">
+              <div className="absolute -right-4 -top-4 font-display text-8xl text-[#00CCFF]/10 leading-none select-none">
                 {step.number}
               </div>
 
               <div className="flex items-start gap-6">
-                <div className="w-12 h-12 flex items-center justify-center font-display text-lg text-[#060D1A] bg-[#D4861A] rounded-sm flex-shrink-0">
+                <div className="w-12 h-12 flex items-center justify-center font-display text-lg text-[#060214] bg-[#00CCFF] rounded-sm flex-shrink-0">
                   {step.number}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-display text-[1.8rem] text-[#F5F2EE] leading-tight mb-3">
+                  <h3 className="font-display text-[1.8rem] text-[#FFFFFF] leading-tight mb-3">
                     {step.title}
                   </h3>
-                  <p className="font-body text-[#C4B8A8] text-sm leading-relaxed mb-4">
+                  <p className="font-body text-[#E4F3F7] text-sm leading-relaxed mb-4">
                     {step.desc}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {step.tags.map((tag, j) => (
                       <span
                         key={j}
-                        className="text-xs font-body tracking-wider px-3 py-1 rounded-full text-[#D4861A] border border-[#D4861A]/30 bg-[#D4861A]/5"
+                        className="text-xs font-body tracking-wider px-3 py-1 rounded-full text-[#00CCFF] border border-[#00CCFF]/30 bg-[#00CCFF]/5"
                       >
                         {tag}
                       </span>
@@ -172,7 +173,7 @@ export default function StrategySection() {
 
               {/* Bottom connector */}
               {i < steps.length - 1 && (
-                <div className="absolute -bottom-4 left-14 w-px h-8 bg-[#D4861A]/30" />
+                <div className="absolute -bottom-4 left-14 w-px h-8 bg-[#00CCFF]/20" />
               )}
             </div>
           ))}

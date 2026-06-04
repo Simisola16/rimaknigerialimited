@@ -42,7 +42,7 @@ function Skyscraper({ position, width, height, depth, shape, floors, delay, time
         ) : (
           <ringGeometry args={[width * 0.7, width * 0.7 + 0.06, 4]} />
         )}
-        <meshBasicMaterial color="#E8A040" transparent opacity={0.8} side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#00CCFF" transparent opacity={0.8} side={THREE.DoubleSide} />
       </mesh>
 
       {/* Building mesh group */}
@@ -54,7 +54,7 @@ function Skyscraper({ position, width, height, depth, shape, floors, delay, time
           ) : (
             <boxGeometry args={[width, height, depth]} />
           )}
-          <meshBasicMaterial color="#E8A040" transparent opacity={0.03} />
+          <meshBasicMaterial color="#00CCFF" transparent opacity={0.03} />
         </mesh>
 
         {/* Structural Column lines (Wireframe) */}
@@ -64,7 +64,7 @@ function Skyscraper({ position, width, height, depth, shape, floors, delay, time
           ) : (
             <boxGeometry args={[width, height, depth]} />
           )}
-          <meshBasicMaterial color="#D4861A" wireframe transparent opacity={0.25} />
+          <meshBasicMaterial color="#00CCFF" wireframe transparent opacity={0.25} />
         </mesh>
 
         {/* Horizontal floor plates */}
@@ -75,7 +75,7 @@ function Skyscraper({ position, width, height, depth, shape, floors, delay, time
             ) : (
               <boxGeometry args={[width + 0.04, 0.02, depth + 0.04]} />
             )}
-            <meshBasicMaterial color="#C4B8A8" transparent opacity={0.15} />
+            <meshBasicMaterial color="#E4F3F7" transparent opacity={0.15} />
           </mesh>
         ))}
 
@@ -83,7 +83,7 @@ function Skyscraper({ position, width, height, depth, shape, floors, delay, time
         {height > 4 && (
           <mesh position={[0, height / 2 + 0.5, 0]}>
             <cylinderGeometry args={[0.015, 0.015, 1, 4]} />
-            <meshBasicMaterial color="#D4861A" />
+            <meshBasicMaterial color="#00CCFF" />
           </mesh>
         )}
       </group>
@@ -118,7 +118,7 @@ function House({ position, width, height, depth, delay, time, scrollProgress }) 
       {/* Scanning laser ring */}
       <mesh ref={scanLineRef} position={[position[0], position[1], position[2]]}>
         <ringGeometry args={[width * 0.75, width * 0.75 + 0.05, 4]} />
-        <meshBasicMaterial color="#E8A040" transparent opacity={0.6} side={THREE.DoubleSide} />
+        <meshBasicMaterial color="#00CCFF" transparent opacity={0.6} side={THREE.DoubleSide} />
       </mesh>
 
       {/* House structure */}
@@ -126,27 +126,27 @@ function House({ position, width, height, depth, delay, time, scrollProgress }) 
         {/* House Ground / Ceiling slabs */}
         <mesh position={[0, -height / 2, 0]}>
           <boxGeometry args={[width + 0.02, 0.02, depth + 0.02]} />
-          <meshBasicMaterial color="#C4B8A8" transparent opacity={0.15} />
+          <meshBasicMaterial color="#E4F3F7" transparent opacity={0.15} />
         </mesh>
         <mesh position={[0, 0, 0]}>
           <boxGeometry args={[width + 0.02, 0.02, depth + 0.02]} />
-          <meshBasicMaterial color="#C4B8A8" transparent opacity={0.15} />
+          <meshBasicMaterial color="#E4F3F7" transparent opacity={0.15} />
         </mesh>
 
         {/* House Base walls */}
         <mesh position={[0, -height / 4, 0]}>
           <boxGeometry args={[width, height / 2, depth]} />
-          <meshBasicMaterial color="#D4861A" wireframe transparent opacity={0.25} />
+          <meshBasicMaterial color="#00CCFF" wireframe transparent opacity={0.25} />
         </mesh>
         <mesh position={[0, -height / 4, 0]}>
           <boxGeometry args={[width, height / 2, depth]} />
-          <meshBasicMaterial color="#E8A040" transparent opacity={0.02} />
+          <meshBasicMaterial color="#00CCFF" transparent opacity={0.02} />
         </mesh>
 
         {/* Roof (triangle spire / prism) */}
         <mesh position={[0, height / 4 + height / 8, 0]} rotation={[0, Math.PI / 4, 0]}>
           <coneGeometry args={[width * 0.71, height / 2, 4]} />
-          <meshBasicMaterial color="#D4861A" wireframe transparent opacity={0.35} />
+          <meshBasicMaterial color="#00CCFF" wireframe transparent opacity={0.35} />
         </mesh>
       </group>
     </group>
@@ -169,13 +169,13 @@ function TowerCrane({ time, scrollProgress }) {
       {/* Crane base footprint */}
       <mesh position={[0, 0.05, 0]}>
         <boxGeometry args={[0.4, 0.1, 0.4]} />
-        <meshBasicMaterial color="#C4B8A8" transparent opacity={0.3} />
+        <meshBasicMaterial color="#E4F3F7" transparent opacity={0.3} />
       </mesh>
 
       {/* Vertical Lattice Tower (Mast) */}
       <mesh position={[0, 2.5, 0]}>
         <boxGeometry args={[0.12, 5, 0.12]} />
-        <meshBasicMaterial color="#D4861A" wireframe transparent opacity={0.3} />
+        <meshBasicMaterial color="#00CCFF" wireframe transparent opacity={0.3} />
       </mesh>
 
       {/* Rotating Jib assembly */}
@@ -183,42 +183,42 @@ function TowerCrane({ time, scrollProgress }) {
         {/* Cab */}
         <mesh position={[0, 0.18, 0]}>
           <boxGeometry args={[0.3, 0.35, 0.3]} />
-          <meshBasicMaterial color="#C4B8A8" transparent opacity={0.4} />
+          <meshBasicMaterial color="#E4F3F7" transparent opacity={0.4} />
         </mesh>
 
         {/* Front Long Jib Arm */}
         <mesh position={[1.4, 0, 0]}>
           <boxGeometry args={[2.8, 0.1, 0.1]} />
-          <meshBasicMaterial color="#D4861A" wireframe transparent opacity={0.35} />
+          <meshBasicMaterial color="#00CCFF" wireframe transparent opacity={0.35} />
         </mesh>
 
         {/* Back Short Counterweight Jib */}
         <mesh position={[-0.7, 0, 0]}>
           <boxGeometry args={[1.4, 0.1, 0.1]} />
-          <meshBasicMaterial color="#C4B8A8" wireframe transparent opacity={0.25} />
+          <meshBasicMaterial color="#E4F3F7" wireframe transparent opacity={0.25} />
         </mesh>
 
         {/* Counterweight Block */}
         <mesh position={[-1.2, -0.15, 0]}>
           <boxGeometry args={[0.3, 0.3, 0.2]} />
-          <meshBasicMaterial color="#C4B8A8" transparent opacity={0.5} />
+          <meshBasicMaterial color="#E4F3F7" transparent opacity={0.5} />
         </mesh>
 
         {/* Crane Peak (spire) */}
         <mesh position={[0, 0.45, 0]}>
           <coneGeometry args={[0.1, 0.6, 4]} />
-          <meshBasicMaterial color="#D4861A" wireframe transparent opacity={0.3} />
+          <meshBasicMaterial color="#00CCFF" wireframe transparent opacity={0.3} />
         </mesh>
 
         {/* Hoisting cable */}
         <mesh position={[2, -1.2, 0]}>
           <boxGeometry args={[0.015, 2.4, 0.015]} />
-          <meshBasicMaterial color="#C4B8A8" transparent opacity={0.2} />
+          <meshBasicMaterial color="#E4F3F7" transparent opacity={0.2} />
         </mesh>
         {/* Hook payload ball */}
         <mesh position={[2, -2.4, 0]}>
           <sphereGeometry args={[0.07, 8, 8]} />
-          <meshBasicMaterial color="#E8A040" />
+          <meshBasicMaterial color="#00CCFF" />
         </mesh>
       </group>
     </group>
@@ -242,7 +242,7 @@ function ConstructionScene({ scrollProgress }) {
   return (
     <group ref={groupRef}>
       {/* Ground blueprint CAD grid */}
-      <gridHelper args={[16, 16, '#D4861A', '#C4B8A8']} position={[0, -2.2, 0]} opacity={0.12} transparent />
+      <gridHelper args={[16, 16, '#00CCFF', '#E4F3F7']} position={[0, -2.2, 0]} opacity={0.12} transparent />
 
       {/* Central Skyscraper (Tallest Tower) */}
       <Skyscraper
@@ -316,7 +316,7 @@ function ConstructionScene({ scrollProgress }) {
           <Float key={i} speed={1 + i * 0.15} rotationIntensity={0.5} floatIntensity={0.3}>
             <mesh position={[Math.cos(angle) * r, Math.sin(angle * 0.4) * 1.5, Math.sin(angle) * r]}>
               <boxGeometry args={[0.06, 0.06, 0.06]} />
-              <meshBasicMaterial color="#D4861A" transparent opacity={0.4} />
+              <meshBasicMaterial color="#00CCFF" transparent opacity={0.4} />
             </mesh>
           </Float>
         )
@@ -334,7 +334,7 @@ export default function HeroScene({ scrollProgress }) {
         style={{ background: 'transparent' }}
       >
         <ambientLight intensity={0.4} />
-        <pointLight position={[8, 8, 8]} color="#D4861A" intensity={0.6} />
+        <pointLight position={[8, 8, 8]} color="#00CCFF" intensity={0.6} />
         <ConstructionScene scrollProgress={scrollProgress} />
       </Canvas>
     </div>

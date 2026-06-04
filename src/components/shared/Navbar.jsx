@@ -35,7 +35,7 @@ export default function Navbar() {
       <motion.nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'py-3 bg-[#060D1A]/95 backdrop-blur-xl border-b border-[#D4861A]/20 shadow-2xl'
+            ? 'py-3 bg-[#060214]/95 backdrop-blur-xl border-b border-[#00CCFF]/20 shadow-2xl'
             : 'py-6 bg-transparent'
         }`}
         initial={{ y: -100, opacity: 0 }}
@@ -50,14 +50,14 @@ export default function Navbar() {
             className="flex items-center gap-3 group"
           >
             <div className="w-8 h-8 relative">
-              <div className="absolute inset-0 border-2 border-[#D4861A] rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-              <div className="absolute inset-[6px] bg-[#D4861A] rotate-45 group-hover:rotate-0 transition-transform duration-500" />
+              <div className="absolute inset-0 border-2 border-[#00CCFF] rotate-45 group-hover:rotate-90 transition-transform duration-500" />
+              <div className="absolute inset-[6px] bg-[#00CCFF] rotate-45 group-hover:rotate-0 transition-transform duration-500" />
             </div>
             <div>
               <span className="font-display text-lg text-[#F5F2EE] tracking-widest leading-none block">
                 RIMAK
               </span>
-              <span className="text-[0.6rem] text-[#C4B8A8] tracking-[0.2em] leading-none block">
+              <span className="text-[0.6rem] text-[#E4F3F7] tracking-[0.2em] leading-none block">
                 NIGERIA LIMITED
               </span>
             </div>
@@ -70,10 +70,10 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className="text-[0.8rem] font-body font-medium tracking-[0.15em] text-[#C4B8A8] hover:text-[#D4861A] transition-colors duration-300 uppercase relative group"
+                className="text-[0.8rem] font-body font-medium tracking-[0.15em] text-[#E4F3F7] hover:text-[#00CCFF] transition-colors duration-300 uppercase relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#D4861A] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#00CCFF] transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
             <a
@@ -120,7 +120,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            style={{ background: 'rgba(6, 13, 26, 0.98)', backdropFilter: 'blur(20px)' }}
+            style={{ background: 'rgba(6, 2, 20, 0.98)', backdropFilter: 'blur(20px)' }}
           >
             <nav className="flex flex-col items-center gap-8">
               {navLinks.map((link, i) => (
@@ -128,7 +128,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
-                  className="font-display text-5xl text-[#F5F2EE] hover:text-[#D4861A] transition-colors duration-300 tracking-widest"
+                  className="font-display text-5xl text-[#F5F2EE] hover:text-[#00CCFF] transition-colors duration-300 tracking-widest"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 30 }}
@@ -150,7 +150,7 @@ export default function Navbar() {
               </motion.a>
             </nav>
 
-            <p className="absolute bottom-10 text-[#C4B8A8] text-xs tracking-widest">
+            <p className="absolute bottom-10 text-[#E4F3F7] text-xs tracking-widest">
               RC 9484253
             </p>
           </motion.div>

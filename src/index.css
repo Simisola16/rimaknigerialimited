@@ -7,13 +7,14 @@
    ============================================ */
 
 :root {
-  --navy: #0A1628;
-  --navy-deep: #060D1A;
-  --concrete: #C4B8A8;
-  --concrete-light: #D8CFC3;
-  --gold: #D4861A;
-  --gold-light: #E8A040;
-  --cream: #F5F2EE;
+  --navy: #0D0524;
+  --navy-deep: #060214;
+  --primary-indigo: #330099;
+  --concrete: #E4F3F7;
+  --concrete-light: #F0F8FA;
+  --gold: #00CCFF;
+  --gold-light: #66E0FF;
+  --cream: #FFFFFF;
   --white: #FFFFFF;
   --font-display: 'Bebas Neue', sans-serif;
   --font-body: 'DM Sans', sans-serif;
@@ -101,14 +102,14 @@ h1, h2, h3, h4, h5 {
 }
 
 .glass-card {
-  background: rgba(10, 22, 40, 0.6);
+  background: rgba(13, 5, 36, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(196, 184, 168, 0.12);
+  border: 1px solid rgba(228, 243, 247, 0.12);
 }
 
 .gold-border {
-  border: 1px solid rgba(212, 134, 26, 0.3);
+  border: 1px solid rgba(0, 204, 255, 0.3);
 }
 
 /* ============================================
@@ -174,7 +175,7 @@ canvas {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(212, 134, 26, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 204, 255, 0.1), transparent);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
@@ -245,8 +246,8 @@ canvas {
 .form-field textarea,
 .form-field select {
   width: 100%;
-  background: rgba(10, 22, 40, 0.8);
-  border: 1px solid rgba(196, 184, 168, 0.2);
+  background: rgba(13, 5, 36, 0.8);
+  border: 1px solid rgba(228, 243, 247, 0.2);
   border-radius: 4px;
   padding: 16px 20px;
   color: var(--cream);
@@ -260,7 +261,7 @@ canvas {
 .form-field textarea:focus,
 .form-field select:focus {
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212, 134, 26, 0.1);
+  box-shadow: 0 0 0 3px rgba(0, 204, 255, 0.1);
 }
 
 .form-field label {
@@ -296,7 +297,7 @@ canvas {
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(212, 134, 26, 0.4);
+  box-shadow: 0 12px 40px rgba(0, 204, 255, 0.4);
 }
 
 .btn-outline {
