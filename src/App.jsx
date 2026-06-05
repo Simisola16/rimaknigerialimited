@@ -27,11 +27,46 @@ function App() {
   // Initialize Lenis smooth scroll (synced with GSAP)
   useLenis()
 
+  useGSAP(() => {
+    let mm = gsap.matchMedia()
+
+    mm.add('(min-width: 1024px)', () => {
+      const sections = gsap.utils.toArray('main > section, footer')
+
+      const getScrollPositions = () => {
+        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+        if (scrollHeight <= 0) return [0]
+        return sections.map((sec) => sec.offsetTop / scrollHeight)
+      }
+
+      ScrollTrigger.create({
+        trigger: 'body',
+        start: 'top top',
+        end: 'bottom bottom',
+        snap: {
+          snapTo: (value) => {
+            const positions = getScrollPositions()
+            const closest = positions.reduce((prev, curr) =>
+              Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev,
+              0
+            )
+            return closest
+          },
+          duration: { min: 0.3, max: 0.7 },
+          delay: 0.08,
+          ease: 'power1.out',
+        },
+      })
+    })
+
+    return () => mm.revert()
+  }, [])
+
   useEffect(() => {
     // Refresh ScrollTrigger after all components mount
     const timer = setTimeout(() => {
       ScrollTrigger.refresh()
-    }, 500)
+    }, 600)
     return () => clearTimeout(timer)
   }, [])
 

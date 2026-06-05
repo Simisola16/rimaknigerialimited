@@ -29,61 +29,48 @@ const steps = [
 export default function StrategySection() {
   const sectionRef = useRef()
   const headerRef = useRef()
-  const stepsContainerRef = useRef()
   const stepRefs = useRef([])
 
   useGSAP(() => {
-    const section = sectionRef.current
-    const header = headerRef.current
-
     let mm = gsap.matchMedia()
 
-    mm.add("(min-width: 1024px)", () => {
-      // Pin the section header while steps animate in
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: `+=${window.innerHeight * 2.5}`,
-          pin: true,
-          scrub: 0.6,
-          anticipatePin: 1,
-        },
+    // ── Header reveal (both breakpoints)
+    const headerChildren = {
+      eyebrow: headerRef.current?.querySelector('.str-eyebrow'),
+      heading: headerRef.current?.querySelector('.str-heading'),
+      body: headerRef.current?.querySelector('.str-body'),
+      deco: headerRef.current?.querySelector('.str-deco'),
+    }
+    const headerTrigger = { trigger: headerRef.current, start: 'top 82%', toggleActions: 'play none none none' }
+    gsap.set(Object.values(headerChildren).filter(Boolean), { opacity: 0, y: 24 })
+    gsap.to(headerChildren.eyebrow, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: headerTrigger })
+    gsap.to(headerChildren.heading, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', delay: 0.1, scrollTrigger: headerTrigger })
+    gsap.to(headerChildren.body, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.22, scrollTrigger: headerTrigger })
+    gsap.to(headerChildren.deco, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.35, scrollTrigger: headerTrigger })
+
+    // ── Step card reveals (Smooth Vertical Slide Effect)
+    stepRefs.current.forEach((card, i) => {
+      if (!card) return
+
+      // Set initial states
+      gsap.set(card, {
+        opacity: 0,
+        y: 50
       })
 
-      // Animate each step in sequence with a clean slide-scale transition
-      stepRefs.current.forEach((step, i) => {
-        if (!step) return
-        tl.fromTo(step,
-          { opacity: 0, x: 60, scale: 0.97 },
-          { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: 'power2.out' },
-          i * 0.8
-        )
-      })
+      const trigger = {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      }
 
-      // Header subtle movement
-      tl.to(header, { y: -30, ease: 'none' }, 0)
-    })
-
-    mm.add("(max-width: 1023px)", () => {
-      // Mobile animation: animate steps with scale + fade as they scroll into view
-      stepRefs.current.forEach((step) => {
-        if (!step) return
-        gsap.fromTo(step,
-          { opacity: 0, y: 30, scale: 0.97 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: step,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        )
+      // Slide and fade into view
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: trigger,
       })
     })
 
@@ -92,78 +79,82 @@ export default function StrategySection() {
 
   return (
     <section ref={sectionRef} id="strategy" className="relative bg-[#0D0524] overflow-hidden min-h-screen">
-      {/* Animated gradient background */}
+      {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0D0524] via-[#0D0524] to-[#060214]" />
-        <div
-          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #00CCFF 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10"
-          style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }}
-        />
-        {/* Structural lines */}
-        <div className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: 'repeating-linear-gradient(90deg, #00CCFF 0, #00CCFF 1px, transparent 0, transparent 120px)',
-          }}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-[0.08]"
+          style={{ background: 'radial-gradient(circle, #00CCFF 0%, transparent 70%)' }} />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-[0.08]"
+          style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }} />
+        <div className="absolute inset-0 opacity-[0.035]"
+          style={{ backgroundImage: 'repeating-linear-gradient(90deg, #00CCFF 0, #00CCFF 1px, transparent 0, transparent 120px)' }}
         />
       </div>
 
-      <div className="section-padding relative z-10 h-full flex flex-col lg:flex-row items-start gap-16 pt-24 pb-24">
-        {/* Left: Pinned header */}
-        <div ref={headerRef} className="lg:sticky lg:top-24 lg:w-[40%] flex-shrink-0">
+      <div className="section-padding relative z-10 flex flex-col lg:flex-row items-start gap-16 pt-24 pb-24">
+        {/* Left: sticky header */}
+        <div ref={headerRef} className="lg:sticky lg:top-24 lg:w-[38%] flex-shrink-0">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">STRATEGY</span>
+            <span className="str-eyebrow font-display text-[#00CCFF] text-sm tracking-[0.3em]">STRATEGY</span>
             <div className="gold-line" />
           </div>
-          <h2 className="font-display text-[clamp(2.5rem,5vw,5rem)] text-[#FFFFFF] leading-none mb-6">
+          <h2 className="str-heading font-display text-[clamp(2.5rem,5vw,5rem)] text-[#FFFFFF] leading-none mb-6">
             OPERATIONAL<br />
             <span className="text-gradient-gold">EXCELLENCE</span>
           </h2>
-          <p className="font-body text-[#E4F3F7] text-[1rem] leading-relaxed max-w-sm">
+          <p className="str-body font-body text-[#E4F3F7]/80 text-[1rem] leading-relaxed max-w-sm">
             Our three-pillar operational strategy ensures every project is defined, executed, and reported with the precision of an international engineering firm.
           </p>
-
-          {/* Decorative architectural element */}
-          <div className="mt-12 relative w-32 h-32">
-            <div className="absolute inset-0 border border-[#00CCFF]/20 rotate-45" />
-            <div className="absolute inset-[16px] border border-[#00CCFF]/10 rotate-45" />
-            <div className="absolute inset-[32px] bg-[#00CCFF]/5 rotate-45" />
+          <div className="str-deco mt-12 relative w-28 h-28">
+            <div className="absolute inset-0 border border-[#00CCFF]/15 rotate-45" />
+            <div className="absolute inset-[14px] border border-[#00CCFF]/10 rotate-45" />
+            <div className="absolute inset-[28px] bg-[#00CCFF]/5 rotate-45" />
           </div>
         </div>
 
-        {/* Right: Animated steps */}
-        <div ref={stepsContainerRef} className="flex-1 flex flex-col gap-8 lg:pt-16">
+        {/* Right: step cards */}
+        <div className="flex-1 flex flex-col gap-6 lg:pt-16">
           {steps.map((step, i) => (
             <div
               key={i}
               ref={(el) => (stepRefs.current[i] = el)}
-              className="glass-card gold-border rounded-sm p-8 relative overflow-hidden group opacity-0"
+              className="glass-card gold-border rounded-sm p-8 relative overflow-hidden group
+                         hover:border-[#00CCFF]/40 hover:shadow-[0_8px_40px_rgba(0,204,255,0.08)]
+                         transition-all duration-500"
             >
-              {/* Step number */}
-              <div className="absolute -right-4 -top-4 font-display text-8xl text-[#00CCFF]/10 leading-none select-none">
+              {/* Ghost number */}
+              <div className="absolute -right-3 -top-3 font-display text-[8rem] text-[#00CCFF]/[0.06] leading-none select-none">
                 {step.number}
               </div>
 
-              <div className="flex items-start gap-6">
-                <div className="w-12 h-12 flex items-center justify-center font-display text-lg text-[#060214] bg-[#00CCFF] rounded-sm flex-shrink-0">
+              <div className="flex items-start gap-5">
+                {/* Badge */}
+                <div className="str-badge w-12 h-12 flex-shrink-0 flex items-center justify-center font-display text-base
+                                text-[#060214] bg-[#00CCFF] rounded-sm">
                   {step.number}
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-display text-[1.8rem] text-[#FFFFFF] leading-tight mb-3">
+
+                <div className="flex-1 min-w-0">
+                  {/* Title */}
+                  <h3 className="str-title font-display text-[1.7rem] lg:text-[1.9rem] text-[#FFFFFF] leading-tight mb-3"
+                    style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
                     {step.title}
                   </h3>
-                  <p className="font-body text-[#E4F3F7] text-sm leading-relaxed mb-4">
+
+                  {/* Divider line */}
+                  <div className="str-divider h-px w-12 bg-[#00CCFF]/40 mb-4"
+                    style={{ transformOrigin: 'left center' }} />
+
+                  {/* Description */}
+                  <p className="str-desc font-body text-[#E4F3F7]/80 text-[0.9rem] leading-relaxed mb-5">
                     {step.desc}
                   </p>
+
+                  {/* Tags */}
                   <div className="flex flex-wrap gap-2">
                     {step.tags.map((tag, j) => (
-                      <span
-                        key={j}
-                        className="text-xs font-body tracking-wider px-3 py-1 rounded-full text-[#00CCFF] border border-[#00CCFF]/30 bg-[#00CCFF]/5"
-                      >
+                      <span key={j} className="str-tag text-xs font-body tracking-wider px-3 py-1 rounded-full
+                                               text-[#00CCFF] border border-[#00CCFF]/25 bg-[#00CCFF]/[0.06]">
                         {tag}
                       </span>
                     ))}
@@ -171,9 +162,14 @@ export default function StrategySection() {
                 </div>
               </div>
 
-              {/* Bottom connector */}
+              {/* Hover glow */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{ background: 'radial-gradient(circle at 0% 50%, rgba(0,204,255,0.05), transparent 70%)' }}
+              />
+
+              {/* Connector */}
               {i < steps.length - 1 && (
-                <div className="absolute -bottom-4 left-14 w-px h-8 bg-[#00CCFF]/20" />
+                <div className="absolute -bottom-3 left-[3.75rem] w-px h-6 bg-[#00CCFF]/20" />
               )}
             </div>
           ))}

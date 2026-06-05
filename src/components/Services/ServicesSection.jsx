@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { motion } from 'framer-motion'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -95,25 +94,40 @@ export default function ServicesSection() {
   const sectionRef = useRef()
   const trackRef = useRef()
   const progressBarRef = useRef()
+  const headerRef = useRef()
 
   useGSAP(() => {
     const track = trackRef.current
     const section = sectionRef.current
+    const header = headerRef.current
     if (!track || !section) return
+
+    // Animate header on enter
+    const headerTrigger = { trigger: header, start: 'top 85%', toggleActions: 'play none none none' }
+    gsap.fromTo(header.querySelector('.svc-eyebrow'),
+      { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', scrollTrigger: headerTrigger }
+    )
+    gsap.fromTo(header.querySelector('.svc-heading'),
+      { opacity: 0, y: 30, clipPath: 'inset(100% 0% 0% 0%)' },
+      { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.65, ease: 'power3.out', delay: 0.1, scrollTrigger: headerTrigger }
+    )
+    gsap.fromTo(header.querySelector('.svc-desc'),
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.25, scrollTrigger: headerTrigger }
+    )
 
     const isMobile = window.innerWidth < 768
 
     if (!isMobile) {
-      // Horizontal scroll effect
       const totalWidth = track.scrollWidth - window.innerWidth
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => `+=${totalWidth + window.innerWidth * 0.5}`,
+          end: () => `+=${totalWidth + window.innerWidth * 0.4}`,
           pin: true,
-          scrub: 0.8,
+          scrub: 1,
           anticipatePin: 1,
           onUpdate: (self) => {
             if (progressBarRef.current) {
@@ -123,107 +137,125 @@ export default function ServicesSection() {
         },
       })
 
-      tl.to(track, {
-        x: () => -totalWidth,
-        ease: 'none',
+      tl.to(track, { x: () => -totalWidth, ease: 'none' })
+
+      // Each card: slide up and fade in as it comes into the viewport
+      track.querySelectorAll('.service-card').forEach((card, i) => {
+        gsap.set(card, {
+          opacity: 0,
+          y: 60
+        })
+
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'left 92%',
+          containerAnimation: tl,
+          onEnter: () => {
+            gsap.to(card, {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: 'power3.out'
+            })
+          },
+        })
       })
 
-      // Add a clean slide reveal for the cards as the viewport locks
-      gsap.from(track.querySelectorAll('.service-card'), {
-        opacity: 0,
-        y: 40,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 80%',
-        }
-      })
     } else {
-      // Mobile: reveal with a subtle grow transition
-      ScrollTrigger.batch(track.querySelectorAll('.service-card'), {
-        onEnter: (els) => {
-          gsap.from(els, { opacity: 0, y: 50, scale: 0.96, stagger: 0.12, duration: 0.8, ease: 'power3.out' })
-        },
-        start: 'top 85%',
+      // Mobile: elegant vertical slide-up entrance
+      track.querySelectorAll('.service-card').forEach((card) => {
+        gsap.fromTo(card,
+          {
+            opacity: 0,
+            y: 40
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            }
+          }
+        )
       })
     }
   }, { scope: sectionRef })
 
   return (
     <section ref={sectionRef} id="services" className="relative bg-[#0D0524] overflow-hidden">
-      {/* Section header */}
-      <div className="section-padding pt-24 pb-10 relative z-10">
+
+      {/* Ambient top-left glow */}
+      <div className="absolute top-0 left-0 w-80 h-80 opacity-[0.07] pointer-events-none rounded-full"
+        style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }} />
+
+      {/* Header */}
+      <div ref={headerRef} className="section-padding pt-24 pb-10 relative z-10">
         <div className="flex items-center gap-4 mb-6">
-          <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">SERVICES</span>
+          <span className="svc-eyebrow font-display text-[#00CCFF] text-sm tracking-[0.3em]">SERVICES</span>
           <div className="gold-line" />
         </div>
-        <h2 className="font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4">
+        <h2 className="svc-heading font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4"
+          style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
           WHAT WE<br />
           <span className="text-gradient-gold">DELIVER</span>
         </h2>
-        <p className="font-body text-[#E4F3F7] max-w-xl text-[1rem]">
+        <p className="svc-desc font-body text-[#E4F3F7]/80 max-w-xl text-[1rem]">
           Five core disciplines. One committed partner. Rimak provides comprehensive construction and engineering services — from concept to commissioning.
         </p>
 
-        {/* Scroll indicator for desktop */}
-        <div className="hidden md:flex items-center gap-3 mt-6 text-[#E4F3F7]">
+        {/* Scroll hint */}
+        <div className="hidden md:flex items-center gap-3 mt-6 text-[#E4F3F7]/50">
           <span className="text-xs tracking-widest uppercase">Scroll to explore</span>
           <svg width="40" height="12" viewBox="0 0 40 12">
             <path d="M0 6h36M30 1l6 5-6 5" stroke="currentColor" strokeWidth="1.5" fill="none" />
           </svg>
         </div>
-
-        {/* Progress bar */}
         <div className="hidden md:block mt-4 h-px bg-[#E4F3F7]/10 max-w-xs relative overflow-hidden">
           <div ref={progressBarRef} className="absolute left-0 top-0 h-full bg-[#00CCFF] transition-none" style={{ width: '0%' }} />
         </div>
       </div>
 
-      {/* Horizontal track */}
+      {/* Cards track */}
       <div className="overflow-hidden">
-        <div
-          ref={trackRef}
-          className="horizontal-track md:flex-nowrap flex flex-col md:flex-row gap-0 will-change-transform px-0"
-        >
-          {/* Spacer to start cards after header */}
-          <div className="hidden md:block flex-shrink-0 w-[calc(max(6rem,calc(100vw-80vw)))]" />
-          
-          {services.map((service, i) => (
-            <motion.div
+        <div ref={trackRef} className="horizontal-track flex flex-col md:flex-row will-change-transform">
+          <div className="hidden md:block flex-shrink-0 w-20" />
+
+          {services.map((service) => (
+            <div
               key={service.id}
-              className="service-card flex-shrink-0 w-full md:w-[420px] lg:w-[460px] h-auto md:h-[calc(100vh-280px)] min-h-[400px] mx-0 md:mx-4 first:md:ml-0"
-              whileHover={{ y: -8, transition: { duration: 0.3, ease: 'easeOut' } }}
+              className="service-card flex-shrink-0 w-full md:w-[420px] lg:w-[460px] h-auto md:h-[calc(100vh-280px)] min-h-[400px] md:mx-4"
             >
-              <div className="glass-card gold-border rounded-sm h-full p-8 md:p-10 flex flex-col group cursor-default relative overflow-hidden mx-6 md:mx-0 mb-4 md:mb-0">
-                {/* Background number */}
-                <div className="absolute -right-4 -bottom-6 font-display text-[10rem] text-[#E4F3F7]/5 leading-none select-none">
+              <div className="glass-card gold-border rounded-sm h-full p-8 md:p-10 flex flex-col group cursor-default relative overflow-hidden mx-6 md:mx-0 mb-4 md:mb-0 hover:border-[#00CCFF]/50 transition-colors duration-500">
+                {/* Ghost number */}
+                <div className="absolute -right-4 -bottom-6 font-display text-[10rem] text-[#00CCFF]/5 leading-none select-none">
                   {service.number}
                 </div>
 
                 {/* Icon */}
-                <div className="text-[#00CCFF] mb-8 group-hover:scale-110 transition-transform duration-300">
+                <div className="svc-icon text-[#00CCFF] mb-8 group-hover:scale-110 transition-transform duration-300">
                   {service.icon}
                 </div>
 
-                {/* Title */}
+                {/* Number + title */}
                 <div className="mb-4">
-                  <span className="font-display text-[#00CCFF]/60 text-sm tracking-[0.2em]">{service.number}</span>
-                  <h3 className="font-display text-[1.8rem] md:text-[2rem] text-[#FFFFFF] leading-tight mt-1">
+                  <span className="svc-num font-display text-[#00CCFF]/50 text-sm tracking-[0.2em] block">{service.number}</span>
+                  <h3 className="svc-title font-display text-[1.8rem] md:text-[2rem] text-[#FFFFFF] leading-tight mt-1">
                     {service.title}
                   </h3>
                   <p className="text-[#00CCFF] text-sm tracking-wider mt-1 font-body">{service.subtitle}</p>
                 </div>
 
-                <div className="gold-line mb-6" />
+                <div className="svc-line gold-line mb-6" />
 
-                {/* Description */}
-                <p className="font-body text-[#E4F3F7] text-[0.95rem] leading-relaxed flex-1">
+                <p className="svc-desc-inner font-body text-[#E4F3F7]/85 text-[0.95rem] leading-relaxed flex-1">
                   {service.desc}
                 </p>
 
-                {/* Bottom hover link */}
+                {/* Hover reveal */}
                 <div className="mt-8 flex items-center gap-2 text-[#00CCFF] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <span className="text-xs tracking-widest uppercase font-body">Learn More</span>
                   <svg width="16" height="8" viewBox="0 0 16 8">
@@ -231,16 +263,15 @@ export default function ServicesSection() {
                   </svg>
                 </div>
 
-                {/* Hover Glow */}
+                {/* Hover glow */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-sm"
-                  style={{ background: 'radial-gradient(circle at 30% 30%, rgba(0, 204, 255, 0.06) 0%, transparent 65%)' }}
+                  style={{ background: 'radial-gradient(circle at 30% 30%, rgba(0,204,255,0.07), transparent 65%)' }}
                 />
               </div>
-            </motion.div>
+            </div>
           ))}
 
-          {/* End spacer */}
-          <div className="hidden md:block flex-shrink-0 w-[calc(max(6rem,4vw))]" />
+          <div className="hidden md:block flex-shrink-0 w-20" />
         </div>
       </div>
     </section>

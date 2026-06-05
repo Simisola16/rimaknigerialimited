@@ -59,7 +59,7 @@ export default function ValuesSection() {
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} id="values" className="relative bg-[#0D0524] py-28 section-base overflow-hidden">
+    <section ref={sectionRef} id="values" className="relative bg-[#0D0524] py-28 section-base overflow-hidden lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00CCFF]/30 to-transparent" />

@@ -50,7 +50,6 @@ const contactInfo = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
         <path d="M3 9h18M9 21V9" />
       </svg>
     ),
@@ -60,15 +59,15 @@ const contactInfo = [
 ]
 
 const fieldVariants = {
-  idle: { borderColor: 'rgba(196, 184, 168, 0.2)' },
-  focused: { borderColor: 'rgba(212, 134, 26, 0.8)', transition: { duration: 0.2 } },
+  idle: { borderColor: 'rgba(228, 243, 247, 0.15)' },
+  focused: { borderColor: 'rgba(0, 204, 255, 0.8)', transition: { duration: 0.2 } },
 }
 
 function FormField({ label, id, children, className = '' }) {
   const [focused, setFocused] = useState(false)
   return (
     <motion.div className={`form-field ${className}`} animate={focused ? 'focused' : 'idle'}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id} className="text-[#E4F3F7]/70 text-xs tracking-wider uppercase mb-1 block">{label}</label>
       <motion.div
         animate={focused ? { scale: 1.005 } : { scale: 1 }}
         transition={{ duration: 0.15 }}
@@ -105,12 +104,12 @@ export default function ContactSection() {
   }
 
   return (
-    <section ref={sectionRef} id="contact" className="relative bg-[#060D1A] py-28 section-base">
+    <section ref={sectionRef} id="contact" className="relative bg-[#060214] py-28 section-base lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4861A]/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00CCFF]/30 to-transparent" />
       <div className="absolute inset-0 pointer-events-none opacity-[0.02]"
         style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, #C4B8A8 0, #C4B8A8 1px, transparent 0, transparent 60px), repeating-linear-gradient(90deg, #C4B8A8 0, #C4B8A8 1px, transparent 0, transparent 60px)',
+          backgroundImage: 'repeating-linear-gradient(0deg, #E4F3F7 0, #E4F3F7 1px, transparent 0, transparent 60px), repeating-linear-gradient(90deg, #E4F3F7 0, #E4F3F7 1px, transparent 0, transparent 60px)',
         }}
       />
 
@@ -118,10 +117,10 @@ export default function ContactSection() {
         {/* Header */}
         <div className="contact-header mb-16">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-display text-[#D4861A] text-sm tracking-[0.3em]">CONTACT</span>
+            <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">CONTACT</span>
             <div className="gold-line" />
           </div>
-          <h2 className="font-display text-[clamp(3rem,7vw,6rem)] text-[#F5F2EE] leading-none">
+          <h2 className="font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none">
             GET IN<br /><span className="text-gradient-gold">TOUCH</span>
           </h2>
         </div>
@@ -129,27 +128,27 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Info */}
           <div>
-            <p className="font-body text-[#C4B8A8] text-[1.05rem] leading-relaxed mb-10 max-w-md">
+            <p className="font-body text-[#E4F3F7]/80 text-[1.05rem] leading-relaxed mb-10 max-w-md">
               Ready to start your next project? Contact Rimak Nigeria Limited for a consultation, cost estimate, or to discuss your construction and engineering needs.
             </p>
 
             <div className="space-y-6">
               {contactInfo.map((item, i) => (
                 <div key={i} className="contact-info-item flex items-start gap-5">
-                  <div className="w-10 h-10 flex items-center justify-center text-[#D4861A] border border-[#D4861A]/30 rounded-sm flex-shrink-0 bg-[#D4861A]/5">
+                  <div className="w-10 h-10 flex items-center justify-center text-[#00CCFF] border border-[#00CCFF]/30 rounded-sm flex-shrink-0 bg-[#00CCFF]/5">
                     {item.icon}
                   </div>
                   <div>
-                    <p className="font-body text-xs tracking-[0.15em] text-[#D4861A] uppercase mb-1">{item.label}</p>
+                    <p className="font-body text-xs tracking-[0.15em] text-[#00CCFF] uppercase mb-1">{item.label}</p>
                     {item.href ? (
                       <a
                         href={item.href}
-                        className="font-body text-[#F5F2EE] text-sm hover:text-[#D4861A] transition-colors duration-200 whitespace-pre-line"
+                        className="font-body text-[#E4F3F7]/95 text-sm hover:text-[#00CCFF] transition-colors duration-200 whitespace-pre-line"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <p className="font-body text-[#F5F2EE] text-sm whitespace-pre-line">{item.value}</p>
+                      <p className="font-body text-[#E4F3F7]/90 text-sm whitespace-pre-line">{item.value}</p>
                     )}
                   </div>
                 </div>
@@ -161,17 +160,17 @@ export default function ContactSection() {
               <div className="absolute inset-0 opacity-20">
                 <svg viewBox="0 0 400 200" className="w-full h-full">
                   {/* Simple map-like lines */}
-                  <line x1="0" y1="100" x2="400" y2="100" stroke="#D4861A" strokeWidth="1" />
-                  <line x1="200" y1="0" x2="200" y2="200" stroke="#D4861A" strokeWidth="0.5" strokeDasharray="4,8" />
-                  <circle cx="200" cy="100" r="8" fill="#D4861A" />
-                  <circle cx="200" cy="100" r="16" fill="none" stroke="#D4861A" strokeWidth="1" />
-                  <circle cx="200" cy="100" r="30" fill="none" stroke="#D4861A" strokeWidth="0.5" strokeDasharray="3,6" />
+                  <line x1="0" y1="100" x2="400" y2="100" stroke="#00CCFF" strokeWidth="1" />
+                  <line x1="200" y1="0" x2="200" y2="200" stroke="#00CCFF" strokeWidth="0.5" strokeDasharray="4,8" />
+                  <circle cx="200" cy="100" r="8" fill="#00CCFF" />
+                  <circle cx="200" cy="100" r="16" fill="none" stroke="#00CCFF" strokeWidth="1" />
+                  <circle cx="200" cy="100" r="30" fill="none" stroke="#00CCFF" strokeWidth="0.5" strokeDasharray="3,6" />
                 </svg>
               </div>
               <div className="relative z-10 flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="font-display text-[#D4861A] text-sm tracking-[0.2em]">ORILE-AGEGE, LAGOS</div>
-                  <div className="font-body text-[#C4B8A8] text-xs mt-1">Lagos State, Nigeria</div>
+                  <div className="font-display text-[#00CCFF] text-sm tracking-[0.2em]">ORILE-AGEGE, LAGOS</div>
+                  <div className="font-body text-[#E4F3F7]/70 text-xs mt-1">Lagos State, Nigeria</div>
                 </div>
               </div>
             </div>
@@ -188,13 +187,13 @@ export default function ContactSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, ease: 'backOut' }}
                 >
-                  <div className="w-16 h-16 rounded-full bg-[#D4861A]/20 border border-[#D4861A]/40 flex items-center justify-center mb-6">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4861A" strokeWidth="2">
+                  <div className="w-16 h-16 rounded-full bg-[#00CCFF]/20 border border-[#00CCFF]/40 flex items-center justify-center mb-6">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00CCFF" strokeWidth="2">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <h3 className="font-display text-3xl text-[#F5F2EE] mb-3">Message Sent!</h3>
-                  <p className="font-body text-[#C4B8A8] text-sm leading-relaxed max-w-xs">
+                  <h3 className="font-display text-3xl text-[#FFFFFF] mb-3">Message Sent!</h3>
+                  <p className="font-body text-[#E4F3F7]/70 text-sm leading-relaxed max-w-xs">
                     Thank you for reaching out. A member of the Rimak team will be in touch with you shortly.
                   </p>
                 </motion.div>
@@ -207,7 +206,7 @@ export default function ContactSection() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
                 >
-                  <h3 className="font-display text-2xl text-[#F5F2EE]">Send Us a Message</h3>
+                  <h3 className="font-display text-2xl text-[#FFFFFF]">Send Us a Message</h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <FormField label="Full Name *" id="contact-name">
@@ -301,7 +300,7 @@ export default function ContactSection() {
                     </svg>
                   </motion.button>
 
-                  <p className="font-body text-[#C4B8A8]/50 text-xs text-center">
+                  <p className="font-body text-[#E4F3F7]/40 text-xs text-center">
                     RC 9484253 · Rimak Nigeria Limited
                   </p>
                 </motion.form>

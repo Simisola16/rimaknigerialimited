@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { motion } from 'framer-motion'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -45,46 +44,54 @@ function DivisionCard({ division, index }) {
   const cardRef = useRef()
 
   useGSAP(() => {
-    gsap.from(cardRef.current, {
+    const card = cardRef.current
+    if (!card) return
+
+    // Set initial states
+    gsap.set(card, {
       opacity: 0,
-      y: 50,
-      scale: 0.96,
-      duration: 0.85,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: cardRef.current,
-        start: 'top 85%',
-        toggleActions: 'play none none none',
-      },
-      delay: index * 0.1,
+      y: 50
+    })
+
+    const trigger = {
+      trigger: card,
+      start: 'top 86%',
+      toggleActions: 'play none none none',
+    }
+
+    // Slide up into place
+    gsap.to(card, {
+      opacity: 1,
+      y: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: trigger,
+      delay: index * 0.08,
     })
   }, { scope: cardRef })
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
-      className="group relative opacity-100"
-      style={{ perspective: '1000px' }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.3 }}
+      className="group relative"
     >
       <div className="glass-card rounded-sm p-8 h-full relative overflow-hidden cursor-default
-                      transition-all duration-500 border border-transparent
-                      hover:border-[#00CCFF]/30 hover:shadow-[0_20px_60px_rgba(0,204,255,0.08)]">
-        
-        {/* Large letter background */}
+                      transition-all duration-500 border border-[#E4F3F7]/5
+                      hover:border-[#00CCFF]/30 hover:shadow-[0_16px_50px_rgba(0,204,255,0.07)]">
+
+        {/* Ghost letter */}
         <div
-          className="absolute -right-6 -top-6 font-display text-[12rem] leading-none select-none transition-all duration-500 group-hover:opacity-10"
-          style={{ color: division.color, opacity: 0.05 }}
+          className="absolute -right-4 -top-4 font-display text-[11rem] leading-none select-none transition-opacity duration-500 group-hover:opacity-[0.1]"
+          style={{ color: division.color, opacity: 0.04 }}
         >
           {division.number}
         </div>
 
-        {/* Division letter badge */}
+        {/* Badge */}
         <div
-          className="w-14 h-14 flex items-center justify-center font-display text-2xl mb-6 rounded-sm"
+          className="div-badge w-14 h-14 flex items-center justify-center font-display text-2xl mb-6 rounded-sm"
           style={{
-            background: `linear-gradient(135deg, ${division.color}20, ${division.color}10)`,
+            background: `linear-gradient(135deg, ${division.color}22, ${division.color}0a)`,
             border: `1px solid ${division.color}40`,
             color: division.color,
           }}
@@ -93,22 +100,25 @@ function DivisionCard({ division, index }) {
         </div>
 
         {/* Title */}
-        <h3 className="font-display text-[1.5rem] lg:text-[1.8rem] text-[#FFFFFF] leading-tight mb-4 pr-8">
+        <h3 className="div-title font-display text-[1.5rem] lg:text-[1.75rem] text-[#FFFFFF] leading-tight mb-3 pr-10"
+          style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
           {division.title}
         </h3>
 
-        <div className="w-8 h-px mb-4" style={{ background: division.color }} />
+        {/* Divider */}
+        <div className="div-divider h-px w-10 mb-4"
+          style={{ background: division.color, transformOrigin: 'left center' }} />
 
         {/* Description */}
-        <p className="font-body text-[#E4F3F7] text-sm leading-relaxed mb-6">
+        <p className="div-desc font-body text-[#E4F3F7]/80 text-sm leading-relaxed mb-5">
           {division.desc}
         </p>
 
         {/* Items */}
-        <ul className="space-y-2">
+        <ul className="space-y-[0.6rem]">
           {division.items.map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-[#E4F3F7] text-xs font-body">
-              <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: division.color }} />
+            <li key={i} className="div-item flex items-center gap-3 text-[#E4F3F7]/70 text-xs font-body">
+              <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: division.color }} />
               {item}
             </li>
           ))}
@@ -117,56 +127,62 @@ function DivisionCard({ division, index }) {
         {/* Hover glow */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{ background: `radial-gradient(circle at 50% 0%, ${division.color}08, transparent 70%)` }}
+          style={{ background: `radial-gradient(ellipse at 30% 0%, ${division.color}06, transparent 70%)` }}
         />
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 export default function DivisionsSection() {
   const sectionRef = useRef()
-  const titleRef = useRef()
+  const headerRef = useRef()
 
   useGSAP(() => {
-    gsap.from(titleRef.current, {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: titleRef.current,
-        start: 'top 85%',
-      },
-    })
+    const header = headerRef.current
+    if (!header) return
+
+    const eyebrow = header.querySelector('.div-eyebrow')
+    const heading = header.querySelector('.div-heading')
+    const body = header.querySelector('.div-body')
+
+    gsap.set([eyebrow, heading, body], { opacity: 0, y: 24 })
+
+    const trigger = { trigger: header, start: 'top 85%', toggleActions: 'play none none none' }
+    gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: trigger })
+    gsap.to(heading, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.1, scrollTrigger: trigger })
+    gsap.to(body, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.24, scrollTrigger: trigger })
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} id="divisions" className="relative bg-[#060214] py-28 section-base">
+    <section ref={sectionRef} id="divisions" className="relative bg-[#060214] py-28 section-base lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
       {/* Subtle grid bg */}
-      <div className="absolute inset-0 opacity-[0.03]"
+      <div className="absolute inset-0 opacity-[0.025]"
         style={{
           backgroundImage: 'repeating-linear-gradient(0deg, #E4F3F7 0, #E4F3F7 1px, transparent 0, transparent 80px), repeating-linear-gradient(90deg, #E4F3F7 0, #E4F3F7 1px, transparent 0, transparent 80px)',
         }}
       />
+      {/* Bottom glow */}
+      <div className="absolute bottom-0 right-0 w-96 h-96 opacity-[0.06] pointer-events-none rounded-full"
+        style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }} />
 
       <div className="section-padding relative z-10">
         {/* Header */}
-        <div ref={titleRef} className="mb-20">
+        <div ref={headerRef} className="mb-20">
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">DIVISIONS</span>
+            <span className="div-eyebrow font-display text-[#00CCFF] text-sm tracking-[0.3em]">DIVISIONS</span>
             <div className="gold-line" />
           </div>
-          <h2 className="font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4">
+          <h2 className="div-heading font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4">
             OUR FOUR<br />
             <span className="text-gradient-gold">DIVISIONS</span>
           </h2>
-          <p className="font-body text-[#E4F3F7] max-w-2xl text-[1rem] leading-relaxed">
+          <p className="div-body font-body text-[#E4F3F7]/80 max-w-2xl text-[1rem] leading-relaxed">
             Rimak Nigeria Limited operates through four specialised divisions — each staffed by credentialed professionals, each delivering excellence within its domain.
           </p>
         </div>
 
-        {/* Division cards grid */}
+        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {divisions.map((div, i) => (
             <DivisionCard key={div.id} division={div} index={i} />

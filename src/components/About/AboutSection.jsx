@@ -1,8 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { motion } from 'framer-motion'
 import AnimatedCounter from '../shared/AnimatedCounter'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -20,7 +19,7 @@ const steps = [
             <div
               key={i}
               className="absolute border border-[#00CCFF]/20 rounded-full"
-              style={{ width: `${size}%`, height: `${size}%`, animationDelay: `${i * 0.5}s` }}
+              style={{ width: `${size}%`, height: `${size}%` }}
             />
           ))}
           <div className="relative z-10 text-center">
@@ -74,7 +73,7 @@ const steps = [
     content:
       'We deliver on time, on budget, and to international standards. Our project methodology prioritises timely reporting, cost transparency, safety compliance, and eco-friendly construction. We are not merely contractors — we are strategic partners committed to building the modern infrastructure Nigeria deserves.',
     visual: (
-      <div className="h-64 grid grid-cols-1 gap-3">
+      <div className="h-64 grid grid-cols-1 gap-4 content-center">
         {['Timely Delivery', 'International Standards', 'Eco-Friendly Methods', 'Transparent Reporting'].map((v, i) => (
           <div key={i} className="flex items-center gap-3">
             <div className="w-6 h-6 rounded-full bg-[#00CCFF]/20 border border-[#00CCFF]/40 flex items-center justify-center flex-shrink-0">
@@ -97,30 +96,47 @@ const stats = [
 
 export default function AboutSection() {
   const sectionRef = useRef()
-  const pinWrapRef = useRef()
   const stepsRef = useRef([])
   const progressRef = useRef()
 
   useGSAP(() => {
-    const steps = stepsRef.current.filter(Boolean)
-    const totalSteps = steps.length
-
+    const stepEls = stepsRef.current.filter(Boolean)
+    const totalSteps = stepEls.length
     let mm = gsap.matchMedia()
 
-    mm.add("(min-width: 1024px)", () => {
+    /* ── DESKTOP: pinned vertical scrub ── */
+    mm.add('(min-width: 1024px)', () => {
       const scrollDistance = (totalSteps - 1) * window.innerHeight
 
-      // Pin the section and animate steps
+      // Set initial states
+      stepEls.forEach((step, i) => {
+        if (i === 0) {
+          gsap.set(step, { 
+            opacity: 1, 
+            y: 0, 
+            autoAlpha: 1,
+            pointerEvents: 'auto'
+          })
+        } else {
+          gsap.set(step, {
+            opacity: 0,
+            y: 60,
+            autoAlpha: 0,
+            pointerEvents: 'none'
+          })
+        }
+      })
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
           end: `+=${scrollDistance}`,
           pin: true,
-          scrub: 0.5,
+          scrub: 1,
           snap: {
             snapTo: 1 / (totalSteps - 1),
-            duration: 0.4,
+            duration: { min: 0.2, max: 0.5 },
             ease: 'power2.inOut',
           },
           onUpdate: (self) => {
@@ -131,34 +147,45 @@ export default function AboutSection() {
         },
       })
 
-      // Animate each step in/out
-      steps.forEach((step, i) => {
-        if (i === 0) {
-          gsap.set(step, { opacity: 1, y: 0, scale: 1 })
-        } else {
-          tl.fromTo(
-            step,
-            { opacity: 0, y: 80, scale: 0.96 },
-            { opacity: 1, y: 0, scale: 1, duration: 1, ease: 'power2.out' },
-            i - 0.8
-          )
+      stepEls.forEach((step, i) => {
+        if (i > 0) {
+          // Incoming: Clean vertical reveal
+          tl.to(step, {
+            autoAlpha: 1,
+            pointerEvents: 'auto',
+            y: 0,
+            duration: 0.8,
+            ease: 'power3.out',
+          }, i - 0.8)
         }
+
+        // Outgoing: Clean vertical vanish
         if (i < totalSteps - 1) {
-          tl.to(step, { opacity: 0, y: -80, scale: 0.96, duration: 1, ease: 'power2.in' }, i + 0.6)
+          tl.to(step, {
+            autoAlpha: 0,
+            pointerEvents: 'none',
+            y: -60,
+            duration: 0.6,
+            ease: 'power3.in',
+          }, i + 0.6)
         }
       })
     })
 
-    mm.add("(max-width: 1023px)", () => {
-      // Mobile animation: fade and slide each step up as it scrolls into view
-      steps.forEach((step) => {
-        gsap.fromTo(
-          step,
-          { opacity: 0, y: 40 },
+    /* ── MOBILE: Cinematic Slide triggers per step ── */
+    mm.add('(max-width: 1023px)', () => {
+      stepEls.forEach((step) => {
+        gsap.set(step, { clearProps: "all" })
+
+        gsap.fromTo(step,
+          {
+            opacity: 0,
+            y: 40
+          },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.9,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: step,
@@ -175,58 +202,61 @@ export default function AboutSection() {
 
   return (
     <section ref={sectionRef} id="about" className="relative min-h-screen lg:h-screen lg:overflow-hidden bg-[#060214] py-20 lg:py-0">
-      {/* Background pattern */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage: 'repeating-linear-gradient(0deg, #330099 0, #330099 1px, transparent 1px, transparent 60px), repeating-linear-gradient(90deg, #330099 0, #330099 1px, transparent 1px, transparent 60px)',
-          }}
-        />
+      {/* Blueprint grid */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+        <div className="w-full h-full" style={{
+          backgroundImage: 'repeating-linear-gradient(0deg, #330099 0, #330099 1px, transparent 1px, transparent 60px), repeating-linear-gradient(90deg, #330099 0, #330099 1px, transparent 1px, transparent 60px)',
+        }} />
       </div>
 
-      <div ref={pinWrapRef} className="relative z-10 w-full h-full section-padding flex flex-col lg:flex-row items-start lg:items-center pt-28 lg:pt-0 pb-20 lg:pb-0">
-        {/* Left: Step indicator */}
-        <div className="hidden lg:flex flex-col items-center gap-4 mr-16 h-64">
+      {/* Top-right glow */}
+      <div className="absolute top-0 right-0 w-96 h-96 opacity-[0.06] pointer-events-none rounded-full"
+        style={{ background: 'radial-gradient(circle, #00CCFF 0%, transparent 70%)' }} />
+
+      <div className="relative z-10 w-full h-full section-padding flex flex-col lg:flex-row items-start lg:items-center pt-28 lg:pt-0 pb-20 lg:pb-0">
+
+        {/* Progress bar (desktop) */}
+        <div className="hidden lg:flex flex-col items-center gap-4 mr-16 h-64 flex-shrink-0">
           <div className="w-px flex-1 bg-[#E4F3F7]/10 relative overflow-hidden">
-            <div ref={progressRef} className="absolute top-0 left-0 right-0 bg-[#00CCFF] transition-all duration-300" style={{ height: '0%' }} />
+            <div ref={progressRef} className="absolute top-0 left-0 right-0 bg-[#00CCFF]" style={{ height: '0%', transition: 'height 0.1s linear' }} />
           </div>
           <div className="w-px flex-1 bg-[#E4F3F7]/10" />
         </div>
 
         {/* Section label */}
-        <div className="absolute top-12 left-0 section-padding">
+        <div className="absolute top-12 left-0 section-padding z-20">
           <div className="flex items-center gap-4">
             <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">ABOUT</span>
             <div className="gold-line" />
           </div>
         </div>
 
-        {/* Steps container */}
-        <div className="flex-1 relative w-full lg:h-[450px]">
+        {/* Steps */}
+        <div className="flex-1 relative w-full lg:h-[500px]">
           {steps.map((step, i) => (
             <div
               key={i}
               ref={(el) => (stepsRef.current[i] = el)}
-              className={`relative lg:absolute lg:inset-0 flex flex-col lg:flex-row items-start lg:items-center gap-12 w-full mb-16 lg:mb-0 ${
-                i === 0 ? 'opacity-100' : 'opacity-100 lg:opacity-0'
+              className={`relative lg:absolute lg:inset-0 flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16 w-full mb-20 lg:mb-0 ${
+                i > 0 ? 'lg:opacity-0 lg:pointer-events-none lg:invisible' : ''
               }`}
             >
-              {/* Left: Text */}
+              {/* Text column */}
               <div className="flex-1">
-                <div className="font-display text-[#00CCFF]/30 text-8xl leading-none mb-4">
+                <div className="about-chapter font-display text-[#00CCFF]/25 text-[7rem] leading-none mb-2 select-none">
                   {step.chapter}
                 </div>
-                <h2 className="font-display text-[clamp(2.5rem,5vw,4rem)] text-[#FFFFFF] leading-tight mb-6">
+                <h2 className="about-title font-display text-[clamp(2.2rem,5vw,4rem)] text-[#FFFFFF] leading-tight mb-5"
+                  style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
                   {step.title}
                 </h2>
-                <p className="font-body text-[#E4F3F7] text-[1.05rem] leading-relaxed max-w-lg">
+                <p className="about-body font-body text-[#E4F3F7]/90 text-[1rem] leading-[1.85] max-w-lg">
                   {step.content}
                 </p>
               </div>
 
-              {/* Right: Visual */}
-              <div className="flex-1 w-full max-w-md">
+              {/* Visual column */}
+              <div className="about-visual flex-1 w-full max-w-sm lg:max-w-md">
                 {step.visual}
               </div>
             </div>
@@ -234,7 +264,7 @@ export default function AboutSection() {
         </div>
       </div>
 
-      {/* Stats bar at bottom */}
+      {/* Stats bar */}
       <div className="relative lg:absolute lg:bottom-0 lg:left-0 lg:right-0 z-20 border-t border-[#E4F3F7]/10 bg-[#060214]/80 backdrop-blur-xl">
         <div className="section-padding py-6 grid grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
@@ -242,7 +272,7 @@ export default function AboutSection() {
               <div className="flex items-end justify-center lg:justify-start gap-1">
                 <AnimatedCounter end={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
               </div>
-              <p className="font-body text-[#E4F3F7] text-xs tracking-widest uppercase mt-1">{stat.label}</p>
+              <p className="font-body text-[#E4F3F7]/70 text-xs tracking-widest uppercase mt-1">{stat.label}</p>
             </div>
           ))}
         </div>
