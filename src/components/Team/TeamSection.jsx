@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react'
-import { useGSAP } from '@gsap/react'
+import { useRef, useState, useEffect } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -11,7 +10,6 @@ const management = [
     name: 'Adigun M.A.',
     role: 'Managing Director',
     quals: 'Dip (Const Mgnt)',
-    phone: '08033175515',
     initial: 'AM',
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
@@ -20,7 +18,6 @@ const management = [
     name: 'Rafiu Idris',
     role: 'Executive Director',
     quals: 'HND · PGD · MNIQS · RQS',
-    phone: '08167713129',
     initial: 'RI',
     color: '#E4F3F7',
     accentBg: 'rgba(228,243,247,0.06)',
@@ -29,7 +26,6 @@ const management = [
     name: 'Engr. Bello Amodu Ademola',
     role: 'Technical Director',
     quals: 'B.Tech (Civil) · MASCE · MICE · COREN',
-    phone: null,
     initial: 'BA',
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
@@ -38,7 +34,6 @@ const management = [
     name: 'Oni Ademola',
     role: 'Financial Director',
     quals: 'HND Accountancy · ACA · MNIM',
-    phone: null,
     initial: 'OA',
     color: '#E4F3F7',
     accentBg: 'rgba(228,243,247,0.06)',
@@ -47,7 +42,6 @@ const management = [
     name: 'Babalola Gabriel',
     role: 'Contract Manager',
     quals: 'BSc · MNIQS · RQS',
-    phone: '07035078730',
     initial: 'BG',
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
@@ -68,9 +62,9 @@ const swipePower = (offset, velocity) => Math.abs(offset) * velocity
 
 const cardVariants = {
   enter: (dir) => ({
-    x: dir > 0 ? 150 : -150,
+    x: dir > 0 ? 200 : -200,
     opacity: 0,
-    scale: 0.95,
+    scale: 0.93,
   }),
   center: {
     x: 0,
@@ -78,21 +72,24 @@ const cardVariants = {
     scale: 1,
   },
   exit: (dir) => ({
-    x: dir < 0 ? 150 : -150,
+    x: dir < 0 ? 200 : -200,
     opacity: 0,
-    scale: 0.95,
+    scale: 0.93,
   }),
 }
 
 function ManagementCard({ person }) {
   return (
     <div className="w-full">
-      <div className="glass-card rounded-sm p-8 relative overflow-hidden"
-        style={{ boxShadow: `0 0 60px ${person.accentBg}, 0 20px 40px rgba(0,0,0,0.3)` }}>
-
-        {/* Ambient glow behind avatar */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-30 pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${person.accentBg} 0%, transparent 70%)` }} />
+      <div
+        className="glass-card rounded-sm p-8 relative overflow-hidden"
+        style={{ boxShadow: `0 0 60px ${person.accentBg}, 0 20px 40px rgba(0,0,0,0.3)` }}
+      >
+        {/* Ambient glow */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full opacity-30 pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${person.accentBg} 0%, transparent 70%)` }}
+        />
 
         {/* Avatar */}
         <div className="mb-8 flex justify-center">
@@ -105,11 +102,9 @@ function ManagementCard({ person }) {
             }}
           >
             {person.initial}
-            {/* Corner accent */}
-            <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r"
-              style={{ borderColor: person.color }} />
-            <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l"
-              style={{ borderColor: person.color }} />
+            {/* Corner accents */}
+            <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r" style={{ borderColor: person.color }} />
+            <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l" style={{ borderColor: person.color }} />
           </div>
         </div>
 
@@ -118,30 +113,16 @@ function ManagementCard({ person }) {
           <h3 className="font-display text-[1.8rem] lg:text-[2rem] text-[#FFFFFF] leading-tight mb-2">
             {person.name}
           </h3>
-          <p className="font-body text-sm tracking-[0.2em] uppercase mb-4 font-semibold"
-            style={{ color: person.color }}>
+          <p className="font-body text-sm tracking-[0.2em] uppercase mb-4 font-semibold" style={{ color: person.color }}>
             {person.role}
           </p>
 
           {/* Divider */}
           <div className="mx-auto mb-4 h-px w-12" style={{ background: person.color }} />
 
-          <p className="font-body text-[#E4F3F7]/75 text-sm leading-relaxed mb-6 max-w-xs mx-auto">
+          <p className="font-body text-[#E4F3F7]/75 text-sm leading-relaxed max-w-xs mx-auto">
             {person.quals}
           </p>
-
-          {person.phone && (
-            <a
-              href={`tel:${person.phone}`}
-              className="inline-flex items-center gap-2 text-xs font-body hover:opacity-80 transition-opacity justify-center"
-              style={{ color: person.color }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.17 6.17l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 15v1.92z" />
-              </svg>
-              {person.phone}
-            </a>
-          )}
         </div>
       </div>
     </div>
@@ -161,49 +142,83 @@ export default function TeamSection() {
     setPage([next, newDir])
   }
 
-  useGSAP(() => {
-    // Section header reveal
-    const header = sectionRef.current?.querySelector('.ldp-header')
+  useEffect(() => {
+    const timer = setInterval(() => {
+      paginate(1)
+    }, 4500)
+    return () => clearInterval(timer)
+  }, [activeIndex])
+
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+
+    // ── Header reveal ──
+    const header = section.querySelector('.ldp-header')
     if (header) {
       const eyebrow = header.querySelector('.ldp-eyebrow')
       const heading = header.querySelector('.ldp-heading')
       const body = header.querySelector('.ldp-body')
-      gsap.set([eyebrow, heading, body], { opacity: 0, y: 24 })
-      const trigger = { trigger: header, start: 'top 85%', toggleActions: 'play none none none' }
-      gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: trigger })
-      gsap.to(heading, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.1, scrollTrigger: trigger })
-      gsap.to(body, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.22, scrollTrigger: trigger })
+
+      gsap.set([eyebrow, heading, body].filter(Boolean), { opacity: 0, y: 28 })
+
+      ScrollTrigger.create({
+        trigger: header,
+        start: 'top 82%',
+        once: true,
+        onEnter: () => {
+          gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+          gsap.to(heading, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: 0.1 })
+          gsap.to(body, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.22 })
+        },
+      })
     }
 
-    // Slider container reveal
+    // ── Slider container reveal ──
     const slider = sliderWrapRef.current
     if (slider) {
-      gsap.fromTo(slider,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: { trigger: slider, start: 'top 85%', toggleActions: 'play none none none' },
-        }
-      )
+      gsap.set(slider, { opacity: 0, y: 50 })
+      ScrollTrigger.create({
+        trigger: slider,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          gsap.to(slider, {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+          })
+        },
+      })
     }
 
-    // Technical rows
-    ScrollTrigger.batch('.tech-row', {
-      onEnter: (els) => {
-        gsap.from(els, { opacity: 0, x: -30, duration: 0.65, stagger: 0.07, ease: 'power3.out' })
-      },
-      start: 'top 90%',
-    })
+    // ── Technical staff rows ──
+    const techHeader = section.querySelector('.tech-header')
+    const techTable = section.querySelector('table')
+    if (techHeader && techTable) {
+      gsap.set(techHeader, { opacity: 0, y: 20 })
+      ScrollTrigger.create({
+        trigger: techHeader,
+        start: 'top 85%',
+        once: true,
+        onEnter: () => {
+          gsap.to(techHeader, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
 
-    // Tech section header
-    const techHeader = sectionRef.current?.querySelector('.tech-header')
-    if (techHeader) {
-      gsap.fromTo(techHeader,
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: techHeader, start: 'top 85%' } }
-      )
+          const rows = techTable.querySelectorAll('.tech-row')
+          gsap.set(rows, { opacity: 0, x: -30 })
+          gsap.to(rows, {
+            opacity: 1,
+            x: 0,
+            duration: 0.65,
+            stagger: 0.07,
+            ease: 'power3.out',
+            delay: 0.15,
+          })
+        },
+      })
     }
-  }, { scope: sectionRef })
+  }, [])
 
   const person = management[activeIndex]
 
@@ -239,7 +254,7 @@ export default function TeamSection() {
             </span>
           </div>
 
-          {/* Card viewport */}
+          {/* Card viewport — single card visible at all times */}
           <div className="relative overflow-hidden min-h-[380px] flex items-center">
             <AnimatePresence initial={false} custom={direction} mode="wait">
               <motion.div
@@ -250,9 +265,9 @@ export default function TeamSection() {
                 animate="center"
                 exit="exit"
                 transition={{
-                  x: { type: 'spring', stiffness: 280, damping: 28 },
-                  opacity: { duration: 0.2 },
-                  scale: { duration: 0.2 },
+                  x: { type: 'spring', stiffness: 300, damping: 32 },
+                  opacity: { duration: 0.18 },
+                  scale: { duration: 0.18 },
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
@@ -313,7 +328,7 @@ export default function TeamSection() {
             </button>
           </div>
 
-          {/* Swipe hint (mobile only) */}
+          {/* Swipe hint */}
           <p className="md:hidden text-center text-[#E4F3F7]/30 text-xs tracking-widest mt-4 uppercase">
             Swipe to navigate
           </p>

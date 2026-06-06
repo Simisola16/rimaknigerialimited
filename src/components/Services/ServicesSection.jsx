@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
+import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -96,36 +95,53 @@ export default function ServicesSection() {
   const progressBarRef = useRef()
   const headerRef = useRef()
 
-  useGSAP(() => {
-    const track = trackRef.current
+  useEffect(() => {
     const section = sectionRef.current
+    const track = trackRef.current
     const header = headerRef.current
-    if (!track || !section) return
+    if (!section || !track || !header) return
 
-    // Animate header on enter
-    const headerTrigger = { trigger: header, start: 'top 85%', toggleActions: 'play none none none' }
-    gsap.fromTo(header.querySelector('.svc-eyebrow'),
-      { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', scrollTrigger: headerTrigger }
-    )
-    gsap.fromTo(header.querySelector('.svc-heading'),
-      { opacity: 0, y: 30, clipPath: 'inset(100% 0% 0% 0%)' },
-      { opacity: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)', duration: 0.65, ease: 'power3.out', delay: 0.1, scrollTrigger: headerTrigger }
-    )
-    gsap.fromTo(header.querySelector('.svc-desc'),
-      { opacity: 0, y: 16 },
-      { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.25, scrollTrigger: headerTrigger }
-    )
+    // ── Header cascade ──
+    const eyebrow = header.querySelector('.svc-eyebrow')
+    const heading = header.querySelector('.svc-heading')
+    const desc = header.querySelector('.svc-desc')
+    const hint = header.querySelector('.svc-hint')
+
+    gsap.set([eyebrow, heading, desc, hint].filter(Boolean), { opacity: 0, y: 30 })
+
+    const headerST = ScrollTrigger.create({
+      trigger: header,
+      start: 'top 82%',
+      once: true,
+      onEnter: () => {
+        gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+        gsap.to(heading, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: 0.1 })
+        gsap.to(desc, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.22 })
+        if (hint) gsap.to(hint, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.35 })
+      },
+    })
 
     const isMobile = window.innerWidth < 768
 
     if (!isMobile) {
+      // ── Desktop: horizontal scroll with pinning ──
       const totalWidth = track.scrollWidth - window.innerWidth
+
+      // Set cards hidden initially
+      const cards = track.querySelectorAll('.service-card')
+      gsap.set(cards, { 
+        opacity: 0, 
+        rotationY: 35, 
+        x: 150, 
+        scale: 0.9,
+        transformOrigin: '50% 50% -100px'
+      })
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => `+=${totalWidth + window.innerWidth * 0.4}`,
+          end: () => `+=${totalWidth + window.innerWidth * 0.5}`,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -139,56 +155,55 @@ export default function ServicesSection() {
 
       tl.to(track, { x: () => -totalWidth, ease: 'none' })
 
-      // Each card: slide up and fade in as it comes into the viewport
-      track.querySelectorAll('.service-card').forEach((card, i) => {
-        gsap.set(card, {
-          opacity: 0,
-          y: 60
-        })
-
+      // Cards appear when section pins with 3D fan-out entry
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top 60%',
+        once: true,
+        onEnter: () => {
+          gsap.to(cards, {
+            opacity: 1,
+            rotationY: 0,
+            x: 0,
+            scale: 1,
+            stagger: 0.12,
+            duration: 1.2,
+            ease: 'power4.out',
+          })
+        },
+      })
+    } else {
+      // ── Mobile: each card slides up individually with a 3D tilt reveal ──
+      const cards = track.querySelectorAll('.service-card')
+      cards.forEach((card) => {
+        gsap.set(card, { opacity: 0, rotationX: 20, transformOrigin: 'top center', scale: 0.95 })
         ScrollTrigger.create({
           trigger: card,
-          start: 'left 92%',
-          containerAnimation: tl,
+          start: 'top 85%',
+          once: true,
           onEnter: () => {
             gsap.to(card, {
               opacity: 1,
-              y: 0,
-              duration: 0.9,
-              ease: 'power3.out'
+              rotationX: 0,
+              scale: 1,
+              duration: 1,
+              ease: 'power3.out',
             })
           },
         })
       })
-
-    } else {
-      // Mobile: elegant vertical slide-up entrance
-      track.querySelectorAll('.service-card').forEach((card) => {
-        gsap.fromTo(card,
-          {
-            opacity: 0,
-            y: 40
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            }
-          }
-        )
-      })
     }
-  }, { scope: sectionRef })
+
+    return () => {
+      headerST.kill()
+      ScrollTrigger.getAll().forEach(t => t.kill())
+    }
+  }, [])
 
   return (
     <section ref={sectionRef} id="services" className="relative bg-[#0D0524] overflow-hidden">
 
-      {/* Ambient top-left glow */}
+      {/* Ambient glow */}
       <div className="absolute top-0 left-0 w-80 h-80 opacity-[0.07] pointer-events-none rounded-full"
         style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }} />
 
@@ -198,8 +213,7 @@ export default function ServicesSection() {
           <span className="svc-eyebrow font-display text-[#00CCFF] text-sm tracking-[0.3em]">SERVICES</span>
           <div className="gold-line" />
         </div>
-        <h2 className="svc-heading font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4"
-          style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
+        <h2 className="svc-heading font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4">
           WHAT WE<br />
           <span className="text-gradient-gold">DELIVER</span>
         </h2>
@@ -207,15 +221,15 @@ export default function ServicesSection() {
           Five core disciplines. One committed partner. Rimak provides comprehensive construction and engineering services — from concept to commissioning.
         </p>
 
-        {/* Scroll hint */}
-        <div className="hidden md:flex items-center gap-3 mt-6 text-[#E4F3F7]/50">
+        {/* Scroll hint + progress */}
+        <div className="svc-hint hidden md:flex items-center gap-3 mt-6 text-[#E4F3F7]/50">
           <span className="text-xs tracking-widest uppercase">Scroll to explore</span>
           <svg width="40" height="12" viewBox="0 0 40 12">
             <path d="M0 6h36M30 1l6 5-6 5" stroke="currentColor" strokeWidth="1.5" fill="none" />
           </svg>
         </div>
         <div className="hidden md:block mt-4 h-px bg-[#E4F3F7]/10 max-w-xs relative overflow-hidden">
-          <div ref={progressBarRef} className="absolute left-0 top-0 h-full bg-[#00CCFF] transition-none" style={{ width: '0%' }} />
+          <div ref={progressBarRef} className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#00CCFF] to-[#330099] transition-none" style={{ width: '0%' }} />
         </div>
       </div>
 

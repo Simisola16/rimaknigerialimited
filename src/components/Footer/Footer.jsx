@@ -38,10 +38,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 relative flex-shrink-0">
-                <div className="absolute inset-0 border-2 border-[#D4861A] rotate-45" />
-                <div className="absolute inset-[6px] bg-[#D4861A] rotate-45" />
-              </div>
+              <img
+                src="/rimak logo.png"
+                alt="RIMAK NIGERIA LIMITED Logo"
+                className="w-10 h-10 object-contain"
+              />
               <div>
                 <span className="font-display text-lg text-[#F5F2EE] tracking-widest leading-none block">RIMAK</span>
                 <span className="text-[0.6rem] text-[#C4B8A8] tracking-[0.2em] leading-none block">NIGERIA LIMITED</span>

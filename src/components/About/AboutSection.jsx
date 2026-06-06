@@ -1,5 +1,4 @@
 import { useRef, useEffect } from 'react'
-import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import AnimatedCounter from '../shared/AnimatedCounter'
@@ -18,8 +17,8 @@ const steps = [
           {[80, 60, 40].map((size, i) => (
             <div
               key={i}
-              className="absolute border border-[#00CCFF]/20 rounded-full"
-              style={{ width: `${size}%`, height: `${size}%` }}
+              className="absolute border border-[#00CCFF]/20 rounded-full animate-pulse"
+              style={{ width: `${size}%`, height: `${size}%`, animationDelay: `${i * 0.4}s` }}
             />
           ))}
           <div className="relative z-10 text-center">
@@ -99,44 +98,43 @@ export default function AboutSection() {
   const stepsRef = useRef([])
   const progressRef = useRef()
 
-  useGSAP(() => {
+  useEffect(() => {
+    const section = sectionRef.current
     const stepEls = stepsRef.current.filter(Boolean)
-    const totalSteps = stepEls.length
-    let mm = gsap.matchMedia()
+    if (!section || stepEls.length === 0) return
 
-    /* ── DESKTOP: pinned vertical scrub ── */
+    const mm = gsap.matchMedia()
+
+    // ── DESKTOP: Pinned, one step at a time ──
     mm.add('(min-width: 1024px)', () => {
+      const totalSteps = stepEls.length
       const scrollDistance = (totalSteps - 1) * window.innerHeight
 
-      // Set initial states
-      stepEls.forEach((step, i) => {
-        if (i === 0) {
-          gsap.set(step, { 
-            opacity: 1, 
-            y: 0, 
-            autoAlpha: 1,
-            pointerEvents: 'auto'
-          })
-        } else {
-          gsap.set(step, {
-            opacity: 0,
-            y: 60,
-            autoAlpha: 0,
-            pointerEvents: 'none'
-          })
+      // Hide all except first
+      stepEls.forEach((el, i) => {
+        gsap.set(el, {
+          visibility: i === 0 ? 'visible' : 'hidden',
+          position: 'absolute',
+          inset: 0,
+        })
+        if (i > 0) {
+          gsap.set(el.querySelector('.about-chapter'), { opacity: 0, x: 100 })
+          gsap.set(el.querySelector('.about-title'), { opacity: 0, x: 80 })
+          gsap.set(el.querySelector('.about-body'), { opacity: 0, x: 60 })
+          gsap.set(el.querySelector('.about-visual'), { opacity: 0, scale: 0.8, x: -100 })
         }
       })
 
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
+          trigger: section,
           start: 'top top',
           end: `+=${scrollDistance}`,
           pin: true,
-          scrub: 1,
+          scrub: 1.2,
           snap: {
             snapTo: 1 / (totalSteps - 1),
-            duration: { min: 0.2, max: 0.5 },
+            duration: { min: 0.3, max: 0.6 },
             ease: 'power2.inOut',
           },
           onUpdate: (self) => {
@@ -147,58 +145,74 @@ export default function AboutSection() {
         },
       })
 
-      stepEls.forEach((step, i) => {
-        if (i > 0) {
-          // Incoming: Clean vertical reveal
-          tl.to(step, {
-            autoAlpha: 1,
-            pointerEvents: 'auto',
-            y: 0,
-            duration: 0.8,
-            ease: 'power3.out',
-          }, i - 0.8)
-        }
+      for (let i = 1; i < totalSteps; i++) {
+        const prev = stepEls[i - 1]
+        const curr = stepEls[i]
+        const pos = i - 1
 
-        // Outgoing: Clean vertical vanish
-        if (i < totalSteps - 1) {
-          tl.to(step, {
-            autoAlpha: 0,
-            pointerEvents: 'none',
-            y: -60,
-            duration: 0.6,
-            ease: 'power3.in',
-          }, i + 0.6)
-        }
-      })
+        // Exit previous step
+        tl.to(prev.querySelector('.about-chapter'), { opacity: 0, x: -100, duration: 0.4 }, pos)
+        tl.to(prev.querySelector('.about-title'), { opacity: 0, x: -80, duration: 0.4 }, pos + 0.05)
+        tl.to(prev.querySelector('.about-body'), { opacity: 0, x: -60, duration: 0.4 }, pos + 0.1)
+        tl.to(prev.querySelector('.about-visual'), { opacity: 0, scale: 0.8, x: 100, duration: 0.4 }, pos)
+        tl.to(prev, { visibility: 'hidden', duration: 0.1 }, pos + 0.4)
+
+        // Enter current step
+        tl.set(curr, { visibility: 'visible' }, pos + 0.2)
+        tl.fromTo(curr.querySelector('.about-chapter'),
+          { opacity: 0, x: 100 },
+          { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' },
+          pos + 0.2
+        )
+        tl.fromTo(curr.querySelector('.about-title'),
+          { opacity: 0, x: 80 },
+          { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' },
+          pos + 0.25
+        )
+        tl.fromTo(curr.querySelector('.about-body'),
+          { opacity: 0, x: 60 },
+          { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' },
+          pos + 0.3
+        )
+        tl.fromTo(curr.querySelector('.about-visual'),
+          { opacity: 0, scale: 0.8, x: -100 },
+          { opacity: 1, scale: 1, x: 0, duration: 0.6, ease: 'power3.out' },
+          pos + 0.2
+        )
+      }
+
+      return () => { tl.scrollTrigger?.kill(); tl.kill() }
     })
 
-    /* ── MOBILE: Cinematic Slide triggers per step ── */
+    // ── MOBILE: Each step animates as it enters viewport ──
     mm.add('(max-width: 1023px)', () => {
-      stepEls.forEach((step) => {
-        gsap.set(step, { clearProps: "all" })
+      stepEls.forEach((el) => {
+        // Reset any desktop position styles
+        gsap.set(el, { clearProps: 'all' })
 
-        gsap.fromTo(step,
-          {
-            opacity: 0,
-            y: 40
+        const inner = el.querySelectorAll('.about-chapter, .about-title, .about-body, .about-visual')
+
+        gsap.set(inner, { opacity: 0, y: 36 })
+
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 80%',
+          once: true,
+          onEnter: () => {
+            gsap.to(inner, {
+              opacity: 1,
+              y: 0,
+              duration: 0.75,
+              stagger: 0.12,
+              ease: 'power3.out',
+            })
           },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: step,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        )
+        })
       })
     })
 
     return () => mm.revert()
-  }, { scope: sectionRef })
+  }, [])
 
   return (
     <section ref={sectionRef} id="about" className="relative min-h-screen lg:h-screen lg:overflow-hidden bg-[#060214] py-20 lg:py-0">
@@ -209,16 +223,17 @@ export default function AboutSection() {
         }} />
       </div>
 
-      {/* Top-right glow */}
+      {/* Glow */}
       <div className="absolute top-0 right-0 w-96 h-96 opacity-[0.06] pointer-events-none rounded-full"
         style={{ background: 'radial-gradient(circle, #00CCFF 0%, transparent 70%)' }} />
 
       <div className="relative z-10 w-full h-full section-padding flex flex-col lg:flex-row items-start lg:items-center pt-28 lg:pt-0 pb-20 lg:pb-0">
 
-        {/* Progress bar (desktop) */}
+        {/* Progress bar (desktop only) */}
         <div className="hidden lg:flex flex-col items-center gap-4 mr-16 h-64 flex-shrink-0">
           <div className="w-px flex-1 bg-[#E4F3F7]/10 relative overflow-hidden">
-            <div ref={progressRef} className="absolute top-0 left-0 right-0 bg-[#00CCFF]" style={{ height: '0%', transition: 'height 0.1s linear' }} />
+            <div ref={progressRef} className="absolute top-0 left-0 right-0 bg-gradient-to-b from-[#00CCFF] to-[#330099]"
+              style={{ height: '0%', transition: 'height 0.05s linear' }} />
           </div>
           <div className="w-px flex-1 bg-[#E4F3F7]/10" />
         </div>
@@ -231,23 +246,20 @@ export default function AboutSection() {
           </div>
         </div>
 
-        {/* Steps */}
+        {/* Steps container */}
         <div className="flex-1 relative w-full lg:h-[500px]">
           {steps.map((step, i) => (
             <div
               key={i}
               ref={(el) => (stepsRef.current[i] = el)}
-              className={`relative lg:absolute lg:inset-0 flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16 w-full mb-20 lg:mb-0 ${
-                i > 0 ? 'lg:opacity-0 lg:pointer-events-none lg:invisible' : ''
-              }`}
+              className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16 w-full mb-20 lg:mb-0"
             >
               {/* Text column */}
               <div className="flex-1">
-                <div className="about-chapter font-display text-[#00CCFF]/25 text-[7rem] leading-none mb-2 select-none">
+                <div className="about-chapter font-display text-[#00CCFF]/20 text-[7rem] leading-none mb-2 select-none">
                   {step.chapter}
                 </div>
-                <h2 className="about-title font-display text-[clamp(2.2rem,5vw,4rem)] text-[#FFFFFF] leading-tight mb-5"
-                  style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
+                <h2 className="about-title font-display text-[clamp(2.2rem,5vw,4rem)] text-[#FFFFFF] leading-tight mb-5">
                   {step.title}
                 </h2>
                 <p className="about-body font-body text-[#E4F3F7]/90 text-[1rem] leading-[1.85] max-w-lg">

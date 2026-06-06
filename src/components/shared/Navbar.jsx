@@ -49,10 +49,11 @@ export default function Navbar() {
             onClick={(e) => handleLinkClick(e, '#hero')}
             className="flex items-center gap-3 group"
           >
-            <div className="w-8 h-8 relative">
-              <div className="absolute inset-0 border-2 border-[#00CCFF] rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-              <div className="absolute inset-[6px] bg-[#00CCFF] rotate-45 group-hover:rotate-0 transition-transform duration-500" />
-            </div>
+            <img
+              src="/rimak logo.png"
+              alt="RIMAK NIGERIA LIMITED Logo"
+              className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-105"
+            />
             <div>
               <span className="font-display text-lg text-[#F5F2EE] tracking-widest leading-none block">
                 RIMAK

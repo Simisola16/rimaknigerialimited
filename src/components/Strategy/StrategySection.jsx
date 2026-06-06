@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
+import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -28,54 +27,79 @@ const steps = [
 
 export default function StrategySection() {
   const sectionRef = useRef()
-  const headerRef = useRef()
-  const stepRefs = useRef([])
+  const cardRefs = useRef([])
 
-  useGSAP(() => {
-    let mm = gsap.matchMedia()
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
 
-    // ── Header reveal (both breakpoints)
-    const headerChildren = {
-      eyebrow: headerRef.current?.querySelector('.str-eyebrow'),
-      heading: headerRef.current?.querySelector('.str-heading'),
-      body: headerRef.current?.querySelector('.str-body'),
-      deco: headerRef.current?.querySelector('.str-deco'),
-    }
-    const headerTrigger = { trigger: headerRef.current, start: 'top 82%', toggleActions: 'play none none none' }
-    gsap.set(Object.values(headerChildren).filter(Boolean), { opacity: 0, y: 24 })
-    gsap.to(headerChildren.eyebrow, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: headerTrigger })
-    gsap.to(headerChildren.heading, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', delay: 0.1, scrollTrigger: headerTrigger })
-    gsap.to(headerChildren.body, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.22, scrollTrigger: headerTrigger })
-    gsap.to(headerChildren.deco, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.35, scrollTrigger: headerTrigger })
+    // ── Header elements ──
+    const eyebrow = section.querySelector('.str-eyebrow')
+    const heading = section.querySelector('.str-heading')
+    const body = section.querySelector('.str-body')
+    const deco = section.querySelector('.str-deco')
 
-    // ── Step card reveals (Smooth Vertical Slide Effect)
-    stepRefs.current.forEach((card, i) => {
-      if (!card) return
+    gsap.set([eyebrow, heading, body, deco].filter(Boolean), { opacity: 0, y: 28 })
 
-      // Set initial states
-      gsap.set(card, {
-        opacity: 0,
-        y: 50
-      })
+    const headerST = ScrollTrigger.create({
+      trigger: section,
+      start: 'top 78%',
+      once: true,
+      onEnter: () => {
+        gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+        gsap.to(heading, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: 0.1 })
+        gsap.to(body, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.22 })
+        gsap.to(deco, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.38 })
+      },
+    })
 
-      const trigger = {
+    // ── Step cards — stagger reveal ──
+    const cards = cardRefs.current.filter(Boolean)
+    cards.forEach((card, i) => {
+      // Set initial state for whole card
+      gsap.set(card, { opacity: 0, y: 60, scale: 0.97 })
+
+      ScrollTrigger.create({
         trigger: card,
         start: 'top 85%',
-        toggleActions: 'play none none none',
-      }
+        once: true,
+        onEnter: () => {
+          // Reveal card
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.75,
+            ease: 'power3.out',
+            delay: i * 0.08,
+          })
 
-      // Slide and fade into view
-      gsap.to(card, {
-        opacity: 1,
-        y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: trigger,
+          // Animate internals
+          const badge = card.querySelector('.str-badge')
+          const title = card.querySelector('.str-title')
+          const divider = card.querySelector('.str-divider')
+          const desc = card.querySelector('.str-desc')
+          const tags = card.querySelectorAll('.str-tag')
+
+          gsap.set([badge, title, divider, desc], { opacity: 0 })
+          gsap.set(badge, { scale: 0.5 })
+          gsap.set(divider, { scaleX: 0, transformOrigin: 'left center' })
+          gsap.set(tags, { opacity: 0, y: 10 })
+
+          const delay = i * 0.08
+          gsap.to(badge, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)', delay: delay + 0.2 })
+          gsap.to(title, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: delay + 0.32 })
+          gsap.to(divider, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'power3.out', delay: delay + 0.42 })
+          gsap.to(desc, { opacity: 1, duration: 0.55, ease: 'power2.out', delay: delay + 0.52 })
+          gsap.to(tags, { opacity: 1, y: 0, stagger: 0.06, duration: 0.4, ease: 'power2.out', delay: delay + 0.62 })
+        },
       })
     })
 
-    return () => mm.revert()
-  }, { scope: sectionRef })
+    return () => {
+      headerST.kill()
+    }
+  }, [])
 
   return (
     <section ref={sectionRef} id="strategy" className="relative bg-[#0D0524] overflow-hidden min-h-screen">
@@ -93,7 +117,7 @@ export default function StrategySection() {
 
       <div className="section-padding relative z-10 flex flex-col lg:flex-row items-start gap-16 pt-24 pb-24">
         {/* Left: sticky header */}
-        <div ref={headerRef} className="lg:sticky lg:top-24 lg:w-[38%] flex-shrink-0">
+        <div className="lg:sticky lg:top-24 lg:w-[38%] flex-shrink-0">
           <div className="flex items-center gap-4 mb-6">
             <span className="str-eyebrow font-display text-[#00CCFF] text-sm tracking-[0.3em]">STRATEGY</span>
             <div className="gold-line" />
@@ -117,7 +141,7 @@ export default function StrategySection() {
           {steps.map((step, i) => (
             <div
               key={i}
-              ref={(el) => (stepRefs.current[i] = el)}
+              ref={(el) => (cardRefs.current[i] = el)}
               className="glass-card gold-border rounded-sm p-8 relative overflow-hidden group
                          hover:border-[#00CCFF]/40 hover:shadow-[0_8px_40px_rgba(0,204,255,0.08)]
                          transition-all duration-500"
@@ -136,14 +160,12 @@ export default function StrategySection() {
 
                 <div className="flex-1 min-w-0">
                   {/* Title */}
-                  <h3 className="str-title font-display text-[1.7rem] lg:text-[1.9rem] text-[#FFFFFF] leading-tight mb-3"
-                    style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
+                  <h3 className="str-title font-display text-[1.7rem] lg:text-[1.9rem] text-[#FFFFFF] leading-tight mb-3">
                     {step.title}
                   </h3>
 
-                  {/* Divider line */}
-                  <div className="str-divider h-px w-12 bg-[#00CCFF]/40 mb-4"
-                    style={{ transformOrigin: 'left center' }} />
+                  {/* Divider */}
+                  <div className="str-divider h-px w-12 bg-[#00CCFF]/40 mb-4" />
 
                   {/* Description */}
                   <p className="str-desc font-body text-[#E4F3F7]/80 text-[0.9rem] leading-relaxed mb-5">

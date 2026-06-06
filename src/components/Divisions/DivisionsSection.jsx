@@ -1,5 +1,4 @@
-import { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
+import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -43,38 +42,56 @@ const divisions = [
 function DivisionCard({ division, index }) {
   const cardRef = useRef()
 
-  useGSAP(() => {
+  useEffect(() => {
     const card = cardRef.current
     if (!card) return
 
-    // Set initial states
-    gsap.set(card, {
-      opacity: 0,
-      y: 50
-    })
+    // Initial state for the whole card — start from direction alternating left/right
+    const isEven = index % 2 === 0
+    gsap.set(card, { opacity: 0, x: isEven ? -60 : 60, scale: 0.97 })
 
-    const trigger = {
+    const st = ScrollTrigger.create({
       trigger: card,
-      start: 'top 86%',
-      toggleActions: 'play none none none',
-    }
+      start: 'top 87%',
+      once: true,
+      onEnter: () => {
+        // Slide card in
+        gsap.to(card, {
+          opacity: 1,
+          x: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          delay: index * 0.07,
+          onComplete: () => {
+            // Animate internals once card is visible
+            const badge = card.querySelector('.div-badge')
+            const title = card.querySelector('.div-title')
+            const divider = card.querySelector('.div-divider')
+            const desc = card.querySelector('.div-desc')
+            const items = card.querySelectorAll('.div-item')
 
-    // Slide up into place
-    gsap.to(card, {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: trigger,
-      delay: index * 0.08,
+            gsap.set([badge, title, divider, desc], { opacity: 0 })
+            gsap.set(badge, { rotation: -12, scale: 0.7 })
+            gsap.set(divider, { scaleX: 0, transformOrigin: 'left center' })
+            gsap.set(items, { opacity: 0, x: -16 })
+
+            const d = index * 0.07
+            gsap.to(badge, { opacity: 1, rotation: 0, scale: 1, duration: 0.55, ease: 'back.out(2)', delay: d })
+            gsap.to(title, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: d + 0.12 })
+            gsap.to(divider, { opacity: 1, scaleX: 1, duration: 0.5, ease: 'power3.out', delay: d + 0.22 })
+            gsap.to(desc, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: d + 0.32 })
+            gsap.to(items, { opacity: 1, x: 0, stagger: 0.07, duration: 0.45, ease: 'power2.out', delay: d + 0.42 })
+          },
+        })
+      },
     })
-  }, { scope: cardRef })
+
+    return () => st.kill()
+  }, [index])
 
   return (
-    <div
-      ref={cardRef}
-      className="group relative"
-    >
+    <div ref={cardRef} className="group relative">
       <div className="glass-card rounded-sm p-8 h-full relative overflow-hidden cursor-default
                       transition-all duration-500 border border-[#E4F3F7]/5
                       hover:border-[#00CCFF]/30 hover:shadow-[0_16px_50px_rgba(0,204,255,0.07)]">
@@ -100,8 +117,7 @@ function DivisionCard({ division, index }) {
         </div>
 
         {/* Title */}
-        <h3 className="div-title font-display text-[1.5rem] lg:text-[1.75rem] text-[#FFFFFF] leading-tight mb-3 pr-10"
-          style={{ clipPath: 'inset(0% 0% 0% 0%)' }}>
+        <h3 className="div-title font-display text-[1.5rem] lg:text-[1.75rem] text-[#FFFFFF] leading-tight mb-3 pr-10">
           {division.title}
         </h3>
 
@@ -138,7 +154,7 @@ export default function DivisionsSection() {
   const sectionRef = useRef()
   const headerRef = useRef()
 
-  useGSAP(() => {
+  useEffect(() => {
     const header = headerRef.current
     if (!header) return
 
@@ -146,13 +162,21 @@ export default function DivisionsSection() {
     const heading = header.querySelector('.div-heading')
     const body = header.querySelector('.div-body')
 
-    gsap.set([eyebrow, heading, body], { opacity: 0, y: 24 })
+    gsap.set([eyebrow, heading, body].filter(Boolean), { opacity: 0, y: 28 })
 
-    const trigger = { trigger: header, start: 'top 85%', toggleActions: 'play none none none' }
-    gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', scrollTrigger: trigger })
-    gsap.to(heading, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.1, scrollTrigger: trigger })
-    gsap.to(body, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.24, scrollTrigger: trigger })
-  }, { scope: sectionRef })
+    const st = ScrollTrigger.create({
+      trigger: header,
+      start: 'top 82%',
+      once: true,
+      onEnter: () => {
+        gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' })
+        gsap.to(heading, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', delay: 0.1 })
+        gsap.to(body, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.22 })
+      },
+    })
+
+    return () => st.kill()
+  }, [])
 
   return (
     <section ref={sectionRef} id="divisions" className="relative bg-[#060214] py-28 section-base lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
@@ -162,7 +186,6 @@ export default function DivisionsSection() {
           backgroundImage: 'repeating-linear-gradient(0deg, #E4F3F7 0, #E4F3F7 1px, transparent 0, transparent 80px), repeating-linear-gradient(90deg, #E4F3F7 0, #E4F3F7 1px, transparent 0, transparent 80px)',
         }}
       />
-      {/* Bottom glow */}
       <div className="absolute bottom-0 right-0 w-96 h-96 opacity-[0.06] pointer-events-none rounded-full"
         style={{ background: 'radial-gradient(circle, #330099 0%, transparent 70%)' }} />
 

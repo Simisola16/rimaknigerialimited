@@ -33,10 +33,18 @@ function App() {
     mm.add('(min-width: 1024px)', () => {
       const sections = gsap.utils.toArray('main > section, footer')
 
+      // Helper ScrollTriggers to capture exact snap positions after pinned sections insert padding
+      const triggers = sections.map((sec) => {
+        return ScrollTrigger.create({
+          trigger: sec,
+          start: 'top top',
+        })
+      })
+
       const getScrollPositions = () => {
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
         if (scrollHeight <= 0) return [0]
-        return sections.map((sec) => sec.offsetTop / scrollHeight)
+        return triggers.map((t) => t.start / scrollHeight)
       }
 
       ScrollTrigger.create({
