@@ -19,7 +19,7 @@ const divisions = [
     title: 'Mechanical & Electrical Engineering',
     desc: 'Complete MEP solutions — from power systems and plumbing to HVAC and fire safety — executed by COREN-registered engineers.',
     color: '#E4F3F7',
-    items: ['Electrical Installations', 'Mechanical Systems', 'Plumbing & Sanitation', 'HVAC Systems', 'Fire Suppression'],
+    items: ['Electrical Installations works', 'Mechanical Systems', 'Plumbing & Sanitation', 'Fire Alarm and Fire Protection Systems'],
   },
   {
     id: 'pmc',
@@ -27,7 +27,7 @@ const divisions = [
     title: 'Project Management, Construction Management, Procurement & Cost Management',
     desc: 'Lifecycle project oversight — from feasibility through procurement, construction, and commissioning — delivered by NIQS-certified professionals.',
     color: '#00CCFF',
-    items: ['Cost Estimation', 'Procurement', 'Construction Management', 'Quality Assurance', 'Risk Management'],
+    items: ['Cost Engineering & Cost Management', 'Capital Budgeting', 'Construction Management', 'Procurement Management', 'Quality Control & Management', 'Risk Management'],
   },
   {
     id: 'supply',

@@ -83,14 +83,7 @@ export default function ValuesSection() {
               </div>
               <h3 className="font-display text-3xl text-[#FFFFFF] mb-4">VISION</h3>
               <div className="gold-line mb-6" />
-              <p className="font-body text-[#E4F3F7] leading-relaxed">
-                To be the employer of choice — a trustworthy and respected Construction & Engineering company known for{' '}
-                <span className="text-[#00CCFF] font-medium">Excellence</span>,{' '}
-                <span className="text-[#00CCFF] font-medium">Leadership</span>,{' '}
-                <span className="text-[#00CCFF] font-medium">Unsurpassed Value</span>,{' '}
-                <span className="text-[#00CCFF] font-medium">Quality</span>,{' '}
-                <span className="text-[#00CCFF] font-medium">Professionalism</span>, and{' '}
-                <span className="text-[#00CCFF] font-medium">Corporate Social Responsibility</span>.
+              <p className="font-body text-[#E4F3F7] leading-relaxed">To be a leading construction company renowned for delivering innovative, sustainable, and high-quality projects that transform communities and exceed client expectations.{' '}
               </p>
             </div>
 
@@ -103,13 +96,7 @@ export default function ValuesSection() {
               <h3 className="font-display text-3xl text-[#FFFFFF] mb-4">MISSION</h3>
               <div className="w-10 h-[3px] rounded-sm bg-[#E4F3F7] mb-6" />
               <p className="font-body text-[#E4F3F7] leading-relaxed">
-                To be the finest construction organisation — built on{' '}
-                <span className="text-[#FFFFFF] font-medium">integrity</span>,{' '}
-                <span className="text-[#FFFFFF] font-medium">excellence</span>,{' '}
-                <span className="text-[#FFFFFF] font-medium">experience</span>,{' '}
-                <span className="text-[#FFFFFF] font-medium">professionalism</span>, and{' '}
-                <span className="text-[#FFFFFF] font-medium">leadership</span> — continuously improving quality, providing safe environments, and contributing to the community through{' '}
-                <span className="text-[#00CCFF] font-medium">eco-friendly construction methods</span>.
+                To deliver exceptional construction and engineering solutions through professionalism, innovation, technical excellence and unwavering commitment to safety, integrity, client satisfaction and contributing to the growth of the nation."
               </p>
             </div>
           </div>

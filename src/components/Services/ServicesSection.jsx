@@ -51,7 +51,7 @@ const services = [
       </svg>
     ),
     title: 'Project Management',
-    subtitle: 'Full Lifecycle Management',
+    subtitle: 'WholeLifecycle Management',
     desc: 'End-to-end project management covering planning, procurement, scheduling, cost control, quality assurance, safety compliance, and comprehensive reporting from inception to handover.',
   },
   {
@@ -66,9 +66,9 @@ const services = [
         <rect x="18" y="14" width="12" height="8" />
       </svg>
     ),
-    title: 'Supply of Road & Building Materials',
+    title: 'Supply of Building & Civil Engineering Materials',
     subtitle: 'Ancillary Works',
-    desc: 'Reliable supply of quality road and building materials — aggregates, cement, reinforcement steel, bitumen, interlocking tiles, and all ancillary construction commodities.',
+    desc: 'Reliable supply of quality building and civil engineering  materials — aggregates, cement, reinforcement steel, bitumen, interlocking tiles, and all ancillary construction commodities.',
   },
   {
     id: 'installation',

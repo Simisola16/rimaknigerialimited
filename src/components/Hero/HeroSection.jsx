@@ -114,7 +114,7 @@ export default function HeroSection() {
         <div ref={subtitleRef} className="mb-12">
           <div className="gold-line mb-4" />
           <p className="font-body text-[#C4B8A8] text-[clamp(0.85rem,1.5vw,1.05rem)] tracking-[0.08em] uppercase max-w-xl">
-            Civil · Building · MEP · Project Management · General Contractors
+            Building · Civil · MEP · Project Management · General Contractors
           </p>
         </div>
 
