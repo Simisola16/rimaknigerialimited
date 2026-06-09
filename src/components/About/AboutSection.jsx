@@ -1,6 +1,6 @@
 import React from 'react';
 import AnimatedCounter from '../shared/AnimatedCounter';
-import { gsap } from 'gsap';
+import Slider from '../shared/Slider';
 
 const steps = [
   {
@@ -84,30 +84,14 @@ const steps = [
 ];
 
 const stats = [
-  { value: 18, suffix: '+', label: 'Years Combined Experience', prefix: '' },
+  { value: 5, suffix: '+', label: 'Years Combined Experience', prefix: '' },
   { value: 4, suffix: '', label: 'Core Divisions', prefix: '' },
   { value: 26, suffix: '', label: 'Equipment Items', prefix: '' },
   { value: 2, suffix: '', label: 'Completed Projects', prefix: '' },
 ];
 
 export default function AboutSection() {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
-    if (!containerRef.current) return;
-    const container = containerRef.current;
-    const totalScroll = container.scrollWidth - container.clientWidth;
-    // Animate scroll left continuously
-    gsap.to(container, {
-      scrollLeft: totalScroll,
-      duration: steps.length * 5, // 5 seconds per slide
-      ease: 'none',
-      repeat: -1,
-      onRepeat: () => {
-        // Reset scroll to start after each loop
-        container.scrollLeft = 0;
-      },
-    });
-  }, []);
+
 
   return (
     <section id="about" className="relative min-h-[70vh] bg-[#060214] py-12 overflow-x-auto snap-x snap-mandatory">
@@ -132,7 +116,7 @@ export default function AboutSection() {
         </div>
 
         {/* Steps container */}
-        <div ref={containerRef} className="flex w-full h-screen overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+          <Slider className="flex w-full h-screen overflow-x-auto snap-x snap-mandatory scrollbar-hide">
           {steps.map((step, i) => (
             <div key={i} className="flex-shrink-0 w-screen h-screen flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16 snap-start">
               {/* Text column */}

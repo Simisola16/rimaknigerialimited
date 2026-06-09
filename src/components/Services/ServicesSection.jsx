@@ -83,9 +83,6 @@ const services = [
         <circle cx="24" cy="16" r="2" />
       </svg>
     ),
-    title: 'Supply & Installation',
-    subtitle: 'Electrical & Mechanical Equipment',
-    desc: 'Procurement, supply, and professional installation of electrical and mechanical equipment — switchgear, generators, pumps, HVAC units, and industrial machinery systems.',
   },
 ]
 

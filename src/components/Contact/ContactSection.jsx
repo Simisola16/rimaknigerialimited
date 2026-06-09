@@ -11,8 +11,8 @@ const serviceOptions = [
   'MEP (Mechanical, Electrical & Plumbing)',
   'Project Management',
   'Supply of Materials',
-  'Supply & Installation',
-  'General Enquiry',
+
+ 'General Enquiry',
 ]
 
 const contactInfo = [
@@ -125,7 +125,7 @@ export default function ContactSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <Slider className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Contact Info */}
           <div>
             <p className="font-body text-[#E4F3F7]/80 text-[1.05rem] leading-relaxed mb-10 max-w-md">

@@ -16,7 +16,7 @@ const services = [
   'MEP Works',
   'Project Management',
   'Supply of Materials',
-  'Supply & Installation',
+  '',
 ]
 
 export default function Footer() {
