@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import Slider from '../shared/Slider'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -307,7 +308,7 @@ export default function ContactSection() {
               )}
             </AnimatePresence>
           </div>
-        </div>
+        </Slider>
       </div>
     </section>
   )

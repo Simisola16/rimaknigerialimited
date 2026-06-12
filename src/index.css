@@ -170,6 +170,43 @@ canvas {
   to { transform: rotate(360deg); }
 }
 
+/* ============================================
+   MOBILE SLIDE-IN ANIMATIONS
+   ============================================ */
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -178,6 +215,105 @@ canvas {
   background: linear-gradient(90deg, transparent, rgba(0, 204, 255, 0.1), transparent);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
+}
+
+/* ============================================
+   SECTION WITH LOGO BACKGROUND
+   ============================================ */
+
+main > section,
+footer {
+  position: relative;
+}
+
+/* Logo background pattern - subtle and professional */
+main > section::before,
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/rimak%20logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content appears above the background */
+main > section > *,
+footer > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   MOBILE & TABLET SLIDE-IN ANIMATIONS
+   Applied to viewports up to 1024px (tablet landscape)
+   ============================================ */
+
+@media (max-width: 1024px) {
+  main > section {
+    overflow: hidden;
+  }
+  
+  main > section:nth-child(1) {
+    animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  
+  main > section:nth-child(2) {
+    animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.1s;
+  }
+  
+  main > section:nth-child(3) {
+    animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.2s;
+  }
+  
+  main > section:nth-child(4) {
+    animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.3s;
+  }
+  
+  main > section:nth-child(5) {
+    animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.4s;
+  }
+  
+  main > section:nth-child(6) {
+    animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.5s;
+  }
+  
+  main > section:nth-child(7) {
+    animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.6s;
+  }
+  
+  main > section:nth-child(8) {
+    animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.7s;
+  }
+  
+  main > section:nth-child(9) {
+    animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.8s;
+  }
+  
+  main > section:nth-child(10) {
+    animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 0.9s;
+  }
+  
+  footer {
+    animation: slideInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: 1s;
+  }
 }
 
 /* ============================================
@@ -336,3 +472,317 @@ canvas {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================
+   MOBILE DRAWER — HOVER BG UTILITY
+   ============================================ */
+
+/* Drawer link hover bg that tailwind can't express inline */
+.drawer-link-hover:hover {
+  background: rgba(0, 204, 255, 0.08);
+}
+
+/* ============================================
+   ABOUT SECTION — PROFESSIONAL REDESIGN
+   ============================================ */
+
+.about-section {
+  padding: 80px 0;
+  background: #F5F7FA;
+}
+
+.about-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.about-header {
+  margin-bottom: 64px;
+}
+
+.about-eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.about-title-main {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  line-height: 1.1;
+  color: #0D0524;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 20px;
+}
+
+.about-title-accent {
+  color: var(--gold);
+}
+
+.about-accent-bar {
+  width: 64px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 2px;
+}
+
+/* ── Two-column grid ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-bottom: 72px;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+/* ── Text column ── */
+.about-body-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #3D4560;
+}
+
+.about-strong {
+  color: #0D0524;
+  font-weight: 600;
+}
+
+.about-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(13, 5, 36, 0.1);
+}
+
+.about-pillar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 40px;
+}
+
+.about-pillar-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.about-pillar-label {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0D0524;
+  letter-spacing: 0.03em;
+}
+
+/* ── Visual column ── */
+.about-visual-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-brand-card {
+  background: linear-gradient(145deg, #0D0524 0%, #1a0a4e 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(13, 5, 36, 0.18), 0 0 0 1px rgba(0, 204, 255, 0.12);
+  border: 1px solid rgba(0, 204, 255, 0.15);
+}
+
+.about-brand-card-inner {
+  padding: 40px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+}
+
+/* Animated rings */
+.about-rings {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 204, 255, 0.18);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* Brand center content */
+.about-brand-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.about-brand-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 204, 255, 0.2);
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 32px rgba(0, 204, 255, 0.12);
+}
+
+.about-brand-wordmark {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 0.2em;
+  color: #F5F2EE;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.about-brand-sub {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(228, 243, 247, 0.6);
+}
+
+.about-brand-reg {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
+/* Service badge pills */
+.about-service-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.about-badge {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(0, 204, 255, 0.08);
+  border: 1px solid rgba(0, 204, 255, 0.25);
+  border-radius: 100px;
+  padding: 5px 14px;
+}
+
+/* Location chip */
+.about-location-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #3D4560;
+  background: #fff;
+  border: 1px solid rgba(13, 5, 36, 0.1);
+  border-radius: 100px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgba(13, 5, 36, 0.06);
+}
+
+.about-location-chip svg {
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+/* ── Stats Bar ── */
+.about-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(13, 5, 36, 0.08);
+  box-shadow: 0 4px 24px rgba(13, 5, 36, 0.07);
+  overflow: hidden;
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .about-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.about-stat-card {
+  position: relative;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.about-stat-card .stat-number {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  color: var(--gold);
+}
+
+.about-stat-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6B7280;
+}
+
+/* Vertical divider between stat cards */
+.about-stat-divider {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: rgba(13, 5, 36, 0.08);
+}
+
+@media (max-width: 640px) {
+  /* Remove dividers on 2-col grid (hard to position correctly) */
+  .about-stat-divider {
+    display: none;
+  }
+  .about-stat-card {
+    padding: 24px 20px;
+  }
+}
+
