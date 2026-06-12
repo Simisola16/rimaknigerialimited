@@ -193,7 +193,7 @@ export default function TeamSection() {
       })
     }
 
-    // ── Technical staff rows ──
+    
     const techHeader = section.querySelector('.tech-header')
     const techTable = section.querySelector('table')
     if (techHeader && techTable) {
@@ -334,7 +334,6 @@ export default function TeamSection() {
           </p>
         </div>
 
-        {/* Technical Staff */}
         <div>
           <div className="overflow-x-auto rounded-sm border border-[#E4F3F7]/10">
             <table className="w-full min-w-[700px]">

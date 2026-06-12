@@ -170,43 +170,6 @@ canvas {
   to { transform: rotate(360deg); }
 }
 
-/* ============================================
-   MOBILE SLIDE-IN ANIMATIONS
-   ============================================ */
-
-@keyframes slideInLeft {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInRight {
-  0% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInUp {
-  0% {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -682,7 +645,7 @@ footer > * {
 }
 
 /* ============================================
-   MOBILE SLIDE LAYOUT — HORIZONTAL SWIPE
+   MOBILE SLIDE LAYOUT ï¿½ HORIZONTAL SWIPE
    ============================================ */
 
 @media (max-width: 768px) {
