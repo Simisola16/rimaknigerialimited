@@ -336,16 +336,6 @@ export default function TeamSection() {
 
         {/* Technical Staff */}
         <div>
-          <div className="tech-header mb-10">
-            <div className="flex items-center gap-4 mb-6">
-              <span className="font-display text-[#00CCFF] text-sm tracking-[0.3em]">TECHNICAL</span>
-              <div className="gold-line" />
-            </div>
-            <h2 className="font-display text-[clamp(2rem,5vw,4rem)] text-[#FFFFFF] leading-none">
-              TECHNICAL<br /><span className="text-gradient-gold">STAFF</span>
-            </h2>
-          </div>
-
           <div className="overflow-x-auto rounded-sm border border-[#E4F3F7]/10">
             <table className="w-full min-w-[700px]">
               <thead>

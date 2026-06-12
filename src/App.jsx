@@ -3,10 +3,12 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { useLenis } from './hooks/useLenis'
+import { useIsMobile } from './hooks/useIsMobile'
 
 // Shared
 import Navbar from './components/shared/Navbar'
 import ScrollProgress from './components/shared/ScrollProgress'
+import MobileSlideLayout from './components/MobileSlideLayout'
 
 // Sections
 import HeroSection from './components/Hero/HeroSection'
@@ -24,10 +26,14 @@ import Footer from './components/Footer/Footer'
 gsap.registerPlugin(ScrollTrigger)
 
 function App() {
-  // Initialize Lenis smooth scroll (synced with GSAP)
+  const isMobile = useIsMobile(768)
+
+  // Initialize Lenis smooth scroll (synced with GSAP) — only for desktop
   useLenis()
 
   useGSAP(() => {
+    if (isMobile) return
+
     let mm = gsap.matchMedia()
 
     mm.add('(min-width: 1024px)', () => {
@@ -68,16 +74,41 @@ function App() {
     })
 
     return () => mm.revert()
-  }, [])
+  }, [isMobile])
 
   useEffect(() => {
-    // Refresh ScrollTrigger after all components mount
-    const timer = setTimeout(() => {
-      ScrollTrigger.refresh()
-    }, 600)
-    return () => clearTimeout(timer)
-  }, [])
+    // Refresh ScrollTrigger after all components mount — only on desktop
+    if (!isMobile) {
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh()
+      }, 600)
+      return () => clearTimeout(timer)
+    }
+  }, [isMobile])
 
+  const sections = [
+    HeroSection,
+    AboutSection,
+    ServicesSection,
+    DivisionsSection,
+    StrategySection,
+    TeamSection,
+    ProjectsSection,
+    EquipmentSection,
+    ValuesSection,
+    ContactSection,
+  ]
+
+  // Mobile slide layout
+  if (isMobile) {
+    return (
+      <div className="relative">
+        <MobileSlideLayout sections={sections} />
+      </div>
+    )
+  }
+
+  // Desktop scroll layout
   return (
     <div className="relative">
       {/* Fixed UI */}

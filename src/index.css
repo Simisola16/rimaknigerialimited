@@ -679,110 +679,45 @@ footer > * {
   font-size: 0.7rem;
   color: var(--gold);
   letter-spacing: 0.1em;
-  margin-top: 4px;
 }
 
-/* Service badge pills */
-.about-service-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
+/* ============================================
+   MOBILE SLIDE LAYOUT � HORIZONTAL SWIPE
+   ============================================ */
 
-.about-badge {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gold);
-  background: rgba(0, 204, 255, 0.08);
-  border: 1px solid rgba(0, 204, 255, 0.25);
-  border-radius: 100px;
-  padding: 5px 14px;
-}
+@media (max-width: 768px) {
+  /* Disable scroll animations on mobile */
+  main,
+  main > section,
+  footer {
+    overflow: visible !important;
+  }
 
-/* Location chip */
-.about-location-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  align-self: flex-start;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #3D4560;
-  background: #fff;
-  border: 1px solid rgba(13, 5, 36, 0.1);
-  border-radius: 100px;
-  padding: 8px 16px;
-  box-shadow: 0 2px 8px rgba(13, 5, 36, 0.06);
-}
+  /* Ensure body scrolls normally on desktop layout fallback */
+  body {
+    overflow-x: hidden;
+  }
 
-.about-location-chip svg {
-  color: var(--gold);
-  flex-shrink: 0;
-}
-
-/* ── Stats Bar ── */
-.about-stats-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid rgba(13, 5, 36, 0.08);
-  box-shadow: 0 4px 24px rgba(13, 5, 36, 0.07);
-  overflow: hidden;
-  position: relative;
-}
-
-@media (max-width: 640px) {
-  .about-stats-bar {
-    grid-template-columns: repeat(2, 1fr);
+  /* Hide desktop navbar and scroll progress on mobile slide layout */
+  body:has(> div > .fixed.inset-0.bg-\[#060214\]) {
+    overflow: hidden;
   }
 }
 
-.about-stat-card {
-  position: relative;
-  padding: 32px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-
-.about-stat-card .stat-number {
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  color: var(--gold);
-}
-
-.about-stat-label {
-  font-family: var(--font-body);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #6B7280;
-}
-
-/* Vertical divider between stat cards */
-.about-stat-divider {
-  position: absolute;
-  right: 0;
-  top: 20%;
-  height: 60%;
-  width: 1px;
-  background: rgba(13, 5, 36, 0.08);
-}
-
-@media (max-width: 640px) {
-  /* Remove dividers on 2-col grid (hard to position correctly) */
-  .about-stat-divider {
-    display: none;
+/* Ensure sections display full height on mobile */
+@media (max-width: 768px) {
+  main > section {
+    min-height: 100vh;
+    height: auto;
   }
-  .about-stat-card {
-    padding: 24px 20px;
+
+  footer {
+    min-height: auto;
   }
 }
 
+/* Focus visible styles for keyboard navigation */
+button:focus-visible,
+[role="tab"]:focus-visible {
+  outline: none;
+}
