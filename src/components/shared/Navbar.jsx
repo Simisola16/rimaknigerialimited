@@ -111,13 +111,13 @@ export default function Navbar() {
             <img
               src="/rimak logo.png"
               alt="RIMAK NIGERIA LIMITED Logo"
-              className="w-10 h-10 object-contain transition-transform duration-300 group-hover:scale-105"
+              className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <div>
-              <span className="font-display text-lg text-[#F5F2EE] tracking-widest leading-none block">
+              <span className="font-display text-xl text-[#F5F2EE] tracking-widest leading-none block mb-[2px]">
                 RIMAK
               </span>
-              <span className="text-[0.6rem] text-[#E4F3F7] tracking-[0.2em] leading-none block">
+              <span className="text-[0.65rem] text-[#E4F3F7] tracking-[0.2em] leading-none block">
                 NIGERIA LIMITED
               </span>
             </div>
@@ -233,13 +233,13 @@ export default function Navbar() {
                 <img
                   src="/rimak logo.png"
                   alt="RIMAK NIGERIA LIMITED Logo"
-                  className="w-8 h-8 object-contain"
+                  className="w-10 h-10 object-contain"
                 />
                 <div>
-                  <span className="font-display text-sm text-[#F5F2EE] tracking-widest leading-none block">
+                  <span className="font-display text-base text-[#F5F2EE] tracking-widest leading-none block mb-[2px]">
                     RIMAK
                   </span>
-                  <span className="text-[0.5rem] text-[#E4F3F7] tracking-[0.2em] leading-none block">
+                  <span className="text-[0.55rem] text-[#E4F3F7] tracking-[0.2em] leading-none block">
                     NIGERIA LIMITED
                   </span>
                 </div>

@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { motion } from 'framer-motion'
+import MobileCarousel from '../shared/MobileCarousel'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -108,11 +109,11 @@ export default function ValuesSection() {
         </div>
 
         {/* Values grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <MobileCarousel className="flex md:grid md:grid-cols-2 lg:grid-cols-5 gap-5 mobile-slider-track hide-scrollbar">
           {coreValues.map((value, i) => (
             <motion.div
               key={i}
-              className="value-card glass-card rounded-sm p-6 relative overflow-hidden group cursor-default"
+              className="value-card glass-card rounded-sm p-6 relative overflow-hidden group cursor-default w-full"
               whileHover={{
                 y: -10,
                 transition: { duration: 0.3, ease: 'easeOut' },
@@ -147,7 +148,7 @@ export default function ValuesSection() {
               />
             </motion.div>
           ))}
-        </div>
+        </MobileCarousel>
       </div>
     </section>
   )

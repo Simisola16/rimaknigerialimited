@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import MobileCarousel from '../shared/MobileCarousel'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -71,7 +72,7 @@ function ProjectCard({ project, index }) {
   return (
     <div
       ref={cardRef}
-      className="relative overflow-hidden rounded-sm border border-[#E4F3F7]/10 group"
+      className="relative overflow-hidden rounded-sm border border-[#E4F3F7]/10 group w-full"
       style={{ minHeight: '500px' }}
     >
       {/* Background: construction site visual */}
@@ -187,11 +188,11 @@ export default function ProjectsSection() {
         </div>
 
         {/* Projects grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <MobileCarousel className="flex md:grid md:grid-cols-2 gap-8 mobile-slider-track hide-scrollbar">
           {projects.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />
           ))}
-        </div>
+        </MobileCarousel>
 
         {/* Callout */}
         <div className="mt-16 glass-card gold-border rounded-sm p-8 flex flex-col md:flex-row items-center justify-between gap-6">

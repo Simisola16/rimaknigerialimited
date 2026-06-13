@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import MobileCarousel from '../shared/MobileCarousel'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -45,6 +46,10 @@ function DivisionCard({ division, index }) {
   useEffect(() => {
     const card = cardRef.current
     if (!card) return
+
+    // Only run GSAP hide/reveal on desktop — MobileCarousel handles mobile
+    const isMobile = window.innerWidth < 768
+    if (isMobile) return
 
     // Initial state for the whole card — start from direction alternating left/right
     const isEven = index % 2 === 0
@@ -91,7 +96,7 @@ function DivisionCard({ division, index }) {
   }, [index])
 
   return (
-    <div ref={cardRef} className="group relative">
+    <div ref={cardRef} className="group relative w-full">
       <div className="glass-card rounded-sm p-8 h-full relative overflow-hidden cursor-default
                       transition-all duration-500 border border-[#E4F3F7]/5
                       hover:border-[#00CCFF]/30 hover:shadow-[0_16px_50px_rgba(0,204,255,0.07)]">
@@ -206,11 +211,11 @@ export default function DivisionsSection() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <MobileCarousel className="flex md:grid md:grid-cols-2 gap-6 mobile-slider-track hide-scrollbar">
           {divisions.map((div, i) => (
             <DivisionCard key={div.id} division={div} index={i} />
           ))}
-        </div>
+        </MobileCarousel>
       </div>
     </section>
   )

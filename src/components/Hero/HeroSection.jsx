@@ -77,8 +77,8 @@ export default function HeroSection() {
       <HeroScene scrollProgress={scrollProgress} />
 
       {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#060D1A]/30 via-transparent to-[#060D1A]/80 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#060D1A]/60 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#060D1A]/10 via-transparent to-[#060D1A]/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#060D1A]/30 via-transparent to-transparent pointer-events-none" />
 
       {/* Content */}
       <div className="relative z-10 section-padding w-full pt-28 pb-20">

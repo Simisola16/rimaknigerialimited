@@ -1,5 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
+import { motion } from 'framer-motion';
+import MobileCarousel from '../shared/MobileCarousel';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import AnimatedCounter from '../shared/AnimatedCounter';
 
@@ -196,21 +198,7 @@ export default function AboutSection() {
           });
         },
       });
-    } else {
-      // ── Mobile: each card stacks vertically, reveals on scroll ──
-      const cards = track.querySelectorAll('.about-slide-card');
-      cards.forEach((card) => {
-        gsap.set(card, { opacity: 0, y: 40 });
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top 88%',
-          once: true,
-          onEnter: () => {
-            gsap.to(card, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-          },
-        });
-      });
-    }
+    } // mobile: MobileCarousel handles visibility
 
     return () => {
       headerST.kill();
@@ -269,9 +257,9 @@ export default function AboutSection() {
 
       {/* ── Horizontal scroll track ── */}
       <div className="overflow-hidden">
-        <div
+        <MobileCarousel
           ref={trackRef}
-          className="horizontal-track flex flex-col md:flex-row will-change-transform"
+          className="horizontal-track flex will-change-transform mobile-slider-track hide-scrollbar"
         >
           {/* Left spacer (desktop) */}
           <div className="hidden md:block flex-shrink-0 w-20" />
@@ -281,7 +269,7 @@ export default function AboutSection() {
               key={i}
               className="about-slide-card flex-shrink-0 w-full md:w-[520px] lg:w-[580px] h-auto md:h-[calc(100vh-280px)] min-h-[480px] md:mx-4"
             >
-              <div className="glass-card gold-border rounded-sm h-full p-8 md:p-10 flex flex-col relative overflow-hidden mx-6 md:mx-0 mb-6 md:mb-0 group hover:border-[#00CCFF]/50 transition-colors duration-500">
+              <div className="glass-card gold-border rounded-sm h-full p-8 md:p-10 flex flex-col relative overflow-hidden group hover:border-[#00CCFF]/50 transition-colors duration-500">
 
                 {/* Ghost chapter number */}
                 <div className="absolute -right-4 -bottom-6 font-display text-[10rem] text-[#00CCFF]/5 leading-none select-none">
@@ -330,7 +318,7 @@ export default function AboutSection() {
 
           {/* Right spacer (desktop) */}
           <div className="hidden md:block flex-shrink-0 w-20" />
-        </div>
+        </MobileCarousel>
       </div>
 
       {/* ── Stats bar ── */}

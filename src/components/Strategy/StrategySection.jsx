@@ -1,4 +1,6 @@
 import { useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import MobileCarousel from '../shared/MobileCarousel'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
@@ -53,48 +55,48 @@ export default function StrategySection() {
       },
     })
 
-    // ── Step cards — stagger reveal ──
+    // ── Step cards — stagger reveal (desktop only) ──
+    const isMobile = window.innerWidth < 768
     const cards = cardRefs.current.filter(Boolean)
-    cards.forEach((card, i) => {
-      // Set initial state for whole card
-      gsap.set(card, { opacity: 0, y: 60, scale: 0.97 })
+    if (!isMobile) {
+      cards.forEach((card, i) => {
+        gsap.set(card, { opacity: 0, y: 60, scale: 0.97 })
 
-      ScrollTrigger.create({
-        trigger: card,
-        start: 'top 85%',
-        once: true,
-        onEnter: () => {
-          // Reveal card
-          gsap.to(card, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.75,
-            ease: 'power3.out',
-            delay: i * 0.08,
-          })
+        ScrollTrigger.create({
+          trigger: card,
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            gsap.to(card, {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              delay: i * 0.08,
+            })
 
-          // Animate internals
-          const badge = card.querySelector('.str-badge')
-          const title = card.querySelector('.str-title')
-          const divider = card.querySelector('.str-divider')
-          const desc = card.querySelector('.str-desc')
-          const tags = card.querySelectorAll('.str-tag')
+            const badge = card.querySelector('.str-badge')
+            const title = card.querySelector('.str-title')
+            const divider = card.querySelector('.str-divider')
+            const desc = card.querySelector('.str-desc')
+            const tags = card.querySelectorAll('.str-tag')
 
-          gsap.set([badge, title, divider, desc], { opacity: 0 })
-          gsap.set(badge, { scale: 0.5 })
-          gsap.set(divider, { scaleX: 0, transformOrigin: 'left center' })
-          gsap.set(tags, { opacity: 0, y: 10 })
+            gsap.set([badge, title, divider, desc], { opacity: 0 })
+            gsap.set(badge, { scale: 0.5 })
+            gsap.set(divider, { scaleX: 0, transformOrigin: 'left center' })
+            gsap.set(tags, { opacity: 0, y: 10 })
 
-          const delay = i * 0.08
-          gsap.to(badge, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)', delay: delay + 0.2 })
-          gsap.to(title, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: delay + 0.32 })
-          gsap.to(divider, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'power3.out', delay: delay + 0.42 })
-          gsap.to(desc, { opacity: 1, duration: 0.55, ease: 'power2.out', delay: delay + 0.52 })
-          gsap.to(tags, { opacity: 1, y: 0, stagger: 0.06, duration: 0.4, ease: 'power2.out', delay: delay + 0.62 })
-        },
+            const delay = i * 0.08
+            gsap.to(badge, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)', delay: delay + 0.2 })
+            gsap.to(title, { opacity: 1, duration: 0.5, ease: 'power2.out', delay: delay + 0.32 })
+            gsap.to(divider, { opacity: 1, scaleX: 1, duration: 0.55, ease: 'power3.out', delay: delay + 0.42 })
+            gsap.to(desc, { opacity: 1, duration: 0.55, ease: 'power2.out', delay: delay + 0.52 })
+            gsap.to(tags, { opacity: 1, y: 0, stagger: 0.06, duration: 0.4, ease: 'power2.out', delay: delay + 0.62 })
+          },
+        })
       })
-    })
+    }
 
     return () => {
       headerST.kill()
@@ -137,12 +139,12 @@ export default function StrategySection() {
         </div>
 
         {/* Right: step cards */}
-        <div className="flex-1 flex flex-col gap-6 lg:pt-16">
+        <MobileCarousel className="flex-1 flex lg:flex-col gap-6 lg:pt-16 mobile-slider-track hide-scrollbar">
           {steps.map((step, i) => (
             <div
               key={i}
               ref={(el) => (cardRefs.current[i] = el)}
-              className="glass-card gold-border rounded-sm p-8 relative overflow-hidden group
+              className="glass-card gold-border rounded-sm p-8 relative overflow-hidden group w-full
                          hover:border-[#00CCFF]/40 hover:shadow-[0_8px_40px_rgba(0,204,255,0.08)]
                          transition-all duration-500"
             >
@@ -195,7 +197,7 @@ export default function StrategySection() {
               )}
             </div>
           ))}
-        </div>
+        </MobileCarousel>
       </div>
     </section>
   )
