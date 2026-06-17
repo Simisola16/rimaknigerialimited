@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import { useNavigate } from 'react-router-dom'
 import MobileCarousel from '../shared/MobileCarousel'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -39,6 +40,7 @@ function ProjectCard({ project, index }) {
   const cardRef = useRef()
   const bgTextRef = useRef()
   const contentRef = useRef()
+  const navigate = useNavigate()
 
   useGSAP(() => {
     // Parallax layers
@@ -77,6 +79,10 @@ function ProjectCard({ project, index }) {
     >
       {/* Background: construction site visual */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0D0524] to-[#060214]">
+        {/* Image placeholder */}
+        <div className="w-full h-40 bg-[#1a0c3f] rounded-md mb-4 flex items-center justify-center text-[#00CCFF]/30">
+          Image Placeholder
+        </div>
         {/* Architectural line art */}
         <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
           <rect x="100" y="50" width="600" height="400" fill="none" stroke="#00CCFF" strokeWidth="1" />
@@ -152,6 +158,15 @@ function ProjectCard({ project, index }) {
             <div className="font-body text-[#E4F3F7]/60 text-[0.65rem] tracking-widest uppercase mt-1">Client</div>
           </div>
         </div>
+        {/* View More Images button */}
+        <button
+          onClick={() => {
+            navigate('/gallery');
+          }}
+          className="btn-primary mt-4"
+        >
+          View More Images
+        </button>
       </div>
     </div>
   )
@@ -180,7 +195,8 @@ export default function ProjectsSection() {
             <div className="gold-line" />
           </div>
           <h2 className="font-display text-[clamp(3rem,7vw,6rem)] text-[#FFFFFF] leading-none mb-4">
-            PAST<br /><span className="text-gradient-gold">PROJECTS</span>
+            OUR<br />
+            <span className="text-gradient-gold">PROJECTS</span>
           </h2>
           <p className="font-body text-[#E4F3F7]/80 max-w-xl text-[1rem] leading-relaxed">
             Every project is a testament to Rimak's commitment to quality, timely delivery, and client satisfaction. Two completed projects — with more in progress.

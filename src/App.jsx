@@ -3,7 +3,8 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { useLenis } from './hooks/useLenis'
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Gallery from './pages/Gallery';
 // Shared
 import Navbar from './components/shared/Navbar'
 import ScrollProgress from './components/shared/ScrollProgress'
@@ -79,27 +80,31 @@ function App() {
   }, [])
 
   return (
-    <div className="relative">
-      {/* Fixed UI */}
-      <ScrollProgress />
-      <Navbar />
-
-      {/* Main content */}
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <ServicesSection />
-        <DivisionsSection />
-        <StrategySection />
-        <TeamSection />
-        <ProjectsSection />
-        <EquipmentSection />
-        <ValuesSection />
-        <ContactSection />
-      </main>
-
-      <Footer />
-    </div>
+<BrowserRouter>
+  <div className="relative">
+    {/* Fixed UI */}
+    <ScrollProgress />
+    <Navbar />
+    <Routes>
+      <Route path="/" element={
+        <main>
+          <HeroSection />
+          <AboutSection />
+          <ServicesSection />
+          <DivisionsSection />
+          <StrategySection />
+          <TeamSection />
+          <ProjectsSection />
+          <EquipmentSection />
+          <ValuesSection />
+          <ContactSection />
+        </main>
+      } />
+      <Route path="/gallery" element={<Gallery />} />
+    </Routes>
+    <Footer />
+  </div>
+</BrowserRouter>
   )
 }
 

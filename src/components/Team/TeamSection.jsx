@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const management = [
+const teamMembers = [
   {
     name: 'Adigun M.A.',
     role: 'Managing Director',
@@ -31,10 +31,10 @@ const management = [
     accentBg: 'rgba(0,204,255,0.08)',
   },
   {
-    name: 'Oni Ademola',
+    name: 'Eko Oluwaseyi',
     role: 'Financial Director',
-    quals: 'HND Accountancy · ACA · MNIM',
-    initial: 'OA',
+    quals: 'BSc, MSc Accounting · MNIM · Financial Director',
+    initial: 'EO',
     color: '#E4F3F7',
     accentBg: 'rgba(228,243,247,0.06)',
   },
@@ -46,15 +46,66 @@ const management = [
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
   },
-]
-
-const technical = [
-  { name: 'Engr. Bello Amodu Ademola', quals: 'B.Tech Civil · MASCE · MICE · COREN', years: 18, role: 'Project Manager', badge: 'Senior' },
-  { name: 'Fashola Kolapo', quals: 'BSc Building Tech · NIOB · CORBON', years: 15, role: 'Site Manager', badge: 'Senior' },
-  { name: 'Engr. Lawal A.A.', quals: 'B.Tech Civil · MSc Civil · MNSE · COREN · MNICE', years: 7, role: 'Project Engineer', badge: 'Mid' },
-  { name: 'Akinyode Samuel', quals: 'HND · MNIQS · RQS', years: 10, role: 'Procurement Manager', badge: 'Senior' },
-  { name: 'Shuaib Lukman', quals: 'HND · MNIQS · RQS', years: 10, role: 'Senior Quantity Surveyor', badge: 'Senior' },
-  { name: 'Ehis Odunayo', quals: 'BSc Quantity Surveying', years: 7, role: 'Quantity Surveyor', badge: 'Mid' },
+  {
+    name: 'Engr. Bello Amodu Ademola',
+    role: 'Project Manager',
+    quals: 'B.Tech Civil · MASCE · MICE · COREN',
+    years: 18,
+    badge: 'Senior',
+    initial: 'BA',
+    color: '#E4F3F7',
+    accentBg: 'rgba(228,243,247,0.06)',
+  },
+  {
+    name: 'Fashola Kolapo',
+    role: 'Project Manager',
+    quals: 'BSc Building Tech · NIOB · CORBON',
+    years: 15,
+    badge: 'Senior',
+    initial: 'FK',
+    color: '#00CCFF',
+    accentBg: 'rgba(0,204,255,0.08)',
+  },
+  {
+    name: 'Engr. Lawal A.A.',
+    role: 'Project Engineer',
+    quals: 'B.Tech Civil · MSc Civil · MNSE · COREN · MNICE',
+    years: 7,
+    badge: 'Mid',
+    initial: 'LA',
+    color: '#E4F3F7',
+    accentBg: 'rgba(228,243,247,0.06)',
+  },
+  {
+    name: 'Akinyode Samuel',
+    role: 'Procurement Manager',
+    quals: 'HND · MNIQS · RQS',
+    years: 10,
+    badge: 'Senior',
+    initial: 'AS',
+    color: '#00CCFF',
+    accentBg: 'rgba(0,204,255,0.08)',
+  },
+  {
+    name: 'Shuaib Lukman',
+    role: 'Senior Quantity Surveyor',
+    quals: 'HND · MNIQS · RQS',
+    years: 10,
+    badge: 'Senior',
+    initial: 'SL',
+    color: '#E4F3F7',
+    accentBg: 'rgba(228,243,247,0.06)',
+  },
+  {
+    name: 'Ehis Odunayo',
+    role: 'Quantity Surveyor',
+    quals: 'BSc Quantity Surveying',
+    years: 7,
+    badge: 'Mid',
+    initial: 'EO',
+    color: '#00CCFF',
+    accentBg: 'rgba(0,204,255,0.08)',
+  },
 ]
 
 const swipeConfidenceThreshold = 8000
@@ -137,8 +188,8 @@ export default function TeamSection() {
 
   const paginate = (newDir) => {
     let next = activeIndex + newDir
-    if (next < 0) next = management.length - 1
-    if (next >= management.length) next = 0
+    if (next < 0) next = teamMembers.length - 1
+    if (next >= teamMembers.length) next = 0
     setPage([next, newDir])
   }
 
@@ -192,35 +243,9 @@ export default function TeamSection() {
         },
       })
     }
-
-    
-    const techHeader = section.querySelector('.tech-header')
-    const techTable = section.querySelector('table')
-    if (techHeader && techTable) {
-      gsap.set(techHeader, { opacity: 0, y: 20 })
-      ScrollTrigger.create({
-        trigger: techHeader,
-        start: 'top 85%',
-        once: true,
-        onEnter: () => {
-          gsap.to(techHeader, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' })
-
-          const rows = techTable.querySelectorAll('.tech-row')
-          gsap.set(rows, { opacity: 0, x: -30 })
-          gsap.to(rows, {
-            opacity: 1,
-            x: 0,
-            duration: 0.65,
-            stagger: 0.07,
-            ease: 'power3.out',
-            delay: 0.15,
-          })
-        },
-      })
-    }
   }, [])
 
-  const person = management[activeIndex]
+  const person = teamMembers[activeIndex]
 
   return (
     <section ref={sectionRef} id="team" className="relative bg-[#060214] py-28 section-base overflow-hidden lg:min-h-screen lg:flex lg:flex-col lg:justify-center">
@@ -237,7 +262,7 @@ export default function TeamSection() {
             <div className="gold-line" />
           </div>
           <h2 className="ldp-heading font-display text-[clamp(2.5rem,6vw,5rem)] text-[#FFFFFF] leading-none mb-4">
-            MANAGEMENT<br /><span className="text-gradient-gold">TEAM</span>
+            OUR<br /><span className="text-gradient-gold">TEAM</span>
           </h2>
           <p className="ldp-body font-body text-[#E4F3F7]/80 max-w-xl text-[1rem] leading-relaxed">
             Rimak is led by a seasoned team of construction professionals, engineers, and business managers — each bringing deep domain expertise and industry-recognised credentials.
@@ -250,7 +275,7 @@ export default function TeamSection() {
           <div className="flex items-center justify-between mb-6 px-1">
             <span className="font-display text-[#00CCFF]/40 text-xs tracking-[0.3em] uppercase">Profile</span>
             <span className="font-display text-[#E4F3F7]/40 text-xs tracking-widest">
-              {String(activeIndex + 1).padStart(2, '0')} / {String(management.length).padStart(2, '0')}
+                {String(activeIndex + 1).padStart(2, '0')} / {String(teamMembers.length).padStart(2, '0')}
             </span>
           </div>
 
@@ -300,7 +325,7 @@ export default function TeamSection() {
 
             {/* Dots */}
             <div className="flex gap-2 items-center">
-              {management.map((_, idx) => (
+              {teamMembers.map((_, idx) => (
                 <button
                   key={idx}
                   onClick={() => setPage([idx, idx > activeIndex ? 1 : -1])}
@@ -335,46 +360,10 @@ export default function TeamSection() {
         </div>
 
         <div>
-          <div className="overflow-x-auto rounded-sm border border-[#E4F3F7]/10">
-            <table className="w-full min-w-[700px]">
-              <thead>
-                <tr className="border-b border-[#E4F3F7]/10 bg-[#330099]/10">
-                  {['Name', 'Qualifications', 'Experience', 'Role', 'Level'].map((h) => (
-                    <th key={h} className="text-left py-4 px-6 font-body text-xs tracking-[0.2em] text-[#00CCFF] uppercase">
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {technical.map((staff, i) => (
-                  <tr
-                    key={i}
-                    className="tech-row border-b border-[#E4F3F7]/5 hover:bg-[#00CCFF]/[0.04] transition-colors duration-200"
-                  >
-                    <td className="py-5 px-6 font-body font-medium text-[#FFFFFF] text-sm">{staff.name}</td>
-                    <td className="py-5 px-6 font-body text-[#E4F3F7]/70 text-xs leading-relaxed max-w-[200px]">{staff.quals}</td>
-                    <td className="py-5 px-6 font-display text-[#00CCFF] text-xl">{staff.years}<span className="text-sm">yrs</span></td>
-                    <td className="py-5 px-6 font-body text-[#E4F3F7]/80 text-sm">{staff.role}</td>
-                    <td className="py-5 px-6">
-                      <span
-                        className="text-xs font-body tracking-wider px-3 py-1 rounded-full"
-                        style={{
-                          background: staff.badge === 'Senior' ? 'rgba(0,204,255,0.12)' : 'rgba(228,243,247,0.08)',
-                          color: staff.badge === 'Senior' ? '#00CCFF' : '#E4F3F7',
-                          border: `1px solid ${staff.badge === 'Senior' ? 'rgba(0,204,255,0.25)' : 'rgba(228,243,247,0.15)'}`,
-                        }}
-                      >
-                        {staff.badge}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          
         </div>
       </div>
     </section>
   )
 }
+
