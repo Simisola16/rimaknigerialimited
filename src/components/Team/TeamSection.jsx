@@ -32,7 +32,7 @@ const teamMembers = [
   },
   {
     name: 'Eko Oluwaseyi',
-    role: 'Financial Director',
+    role: 'Product Manager',
     quals: 'BSc, MSc Accounting · MNIM · Financial Director',
     initial: 'EO',
     color: '#E4F3F7',
