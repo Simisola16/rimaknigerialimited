@@ -10,6 +10,9 @@ const memberImages = {
   'Eko Oluwaseyi': '/Eko Oluwaseyi.jpeg',
   'Babalola Gabriel': '/Babalola Gabriel.jpeg',
   'Shuaib Lukman': '/Lukman Shuaib.jpeg',
+  'Akinyode Samuel': '/Akinyode Samuel.jpeg',
+  'Fashola Kolapo': '/Fashola Kolapo.jpeg',
+  'Engr. Lawal A.A.': '/Lawal Ajetunmobi Abiodun.jpeg',
 }
 
 const teamMembers = [
