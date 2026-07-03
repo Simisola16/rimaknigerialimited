@@ -5,6 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Map member names to their public-folder images
+const memberImages = {
+  'Eko Oluwaseyi': '/Eko Oluwaseyi.jpeg',
+  'Babalola Gabriel': '/Babalola Gabriel.jpeg',
+  'Shuaib Lukman': '/Lukman Shuaib.jpeg',
+}
+
 const teamMembers = [
   {
     name: 'Adigun M.A.',
@@ -130,6 +137,8 @@ const cardVariants = {
 }
 
 function ManagementCard({ person }) {
+  const photo = memberImages[person.name]
+
   return (
     <div className="w-full">
       <div
@@ -142,21 +151,55 @@ function ManagementCard({ person }) {
           style={{ background: `radial-gradient(circle, ${person.accentBg} 0%, transparent 70%)` }}
         />
 
-        {/* Avatar */}
+        {/* Avatar — photo or initials */}
         <div className="mb-8 flex justify-center">
-          <div
-            className="relative w-24 h-24 rounded-sm flex items-center justify-center font-display text-4xl"
-            style={{
-              background: `linear-gradient(135deg, ${person.color}30, ${person.color}12)`,
-              border: `1px solid ${person.color}50`,
-              color: person.color,
-            }}
-          >
-            {person.initial}
-            {/* Corner accents */}
-            <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r" style={{ borderColor: person.color }} />
-            <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l" style={{ borderColor: person.color }} />
-          </div>
+          {photo ? (
+            <div className="relative">
+              {/* Outer glow ring */}
+              <div
+                className="absolute -inset-[3px] rounded-sm pointer-events-none"
+                style={{
+                  background: `linear-gradient(135deg, ${person.color}80, transparent 60%, ${person.color}40)`,
+                  borderRadius: '6px',
+                }}
+              />
+              {/* Corner accents */}
+              <div className="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 z-10" style={{ borderColor: person.color }} />
+              <div className="absolute -bottom-2 -left-2 w-4 h-4 border-b-2 border-l-2 z-10" style={{ borderColor: person.color }} />
+
+              {/* Photo */}
+              <div className="relative w-28 h-28 rounded-sm overflow-hidden">
+                <img
+                  src={photo}
+                  alt={person.name}
+                  className="w-full h-full object-cover object-top"
+                  style={{ filter: 'contrast(1.05) brightness(0.96)' }}
+                />
+                {/* Subtle color overlay for brand cohesion */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: `linear-gradient(180deg, transparent 55%, ${person.color}22 100%)`,
+                    mixBlendMode: 'overlay',
+                  }}
+                />
+              </div>
+            </div>
+          ) : (
+            <div
+              className="relative w-24 h-24 rounded-sm flex items-center justify-center font-display text-4xl"
+              style={{
+                background: `linear-gradient(135deg, ${person.color}30, ${person.color}12)`,
+                border: `1px solid ${person.color}50`,
+                color: person.color,
+              }}
+            >
+              {person.initial}
+              {/* Corner accents */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 border-t border-r" style={{ borderColor: person.color }} />
+              <div className="absolute -bottom-1 -left-1 w-3 h-3 border-b border-l" style={{ borderColor: person.color }} />
+            </div>
+          )}
         </div>
 
         {/* Info */}
