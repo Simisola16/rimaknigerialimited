@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { motion, AnimatePresence } from 'framer-motion'
+import AnimatedCounter from '../shared/AnimatedCounter'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -83,17 +84,17 @@ export default function EquipmentSection() {
             {/* Total badge */}
             <div className="flex gap-6 flex-shrink-0">
               <div className="text-center">
-                <div className="font-display text-5xl text-[#00CCFF]">20</div>
+                <AnimatedCounter end={20} className="block font-display text-5xl text-[#00CCFF]" trigger="#equipment" />
                 <div className="font-body text-[#E4F3F7]/60 text-xs tracking-widest uppercase">Owned</div>
               </div>
               <div className="w-px h-16 bg-[#E4F3F7]/10 self-center" />
               <div className="text-center">
-                <div className="font-display text-5xl text-[#00CCFF]">6</div>
+                <AnimatedCounter end={6} className="block font-display text-5xl text-[#00CCFF]" trigger="#equipment" />
                 <div className="font-body text-[#E4F3F7]/60 text-xs tracking-widest uppercase">On Hire</div>
               </div>
               <div className="w-px h-16 bg-[#E4F3F7]/10 self-center" />
               <div className="text-center">
-                <div className="font-display text-5xl text-[#FFFFFF]">26</div>
+                <AnimatedCounter end={26} className="block font-display text-5xl text-[#FFFFFF]" trigger="#equipment" />
                 <div className="font-body text-[#E4F3F7]/60 text-xs tracking-widest uppercase">Total</div>
               </div>
             </div>
@@ -101,56 +102,8 @@ export default function EquipmentSection() {
         </div>
 
         {/* Content container */}
-        <div className="mt-12 overflow-hidden">
-          {/* Tabs */}
-          <div className="flex gap-2 mb-10">
-            {['owned', 'onHire'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`font-display text-sm tracking-[0.15em] px-6 py-3 rounded-sm transition-all duration-300 ${
-                  activeTab === tab
-                    ? 'bg-[#00CCFF] text-[#060214] font-semibold'
-                    : 'border border-[#E4F3F7]/20 text-[#E4F3F7] hover:border-[#00CCFF]/40 hover:text-[#00CCFF]'
-                }`}
-              >
-                {tab === 'owned' ? `Owned (${owned.length})` : `On Hire (${onHire.length})`}
-              </button>
-            ))}
-          </div>
+        
 
-          {/* Numbers only (no item listing) */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              className="flex items-center justify-center text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="glass-card gold-border rounded-sm p-8 w-full max-w-xl">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="font-display text-6xl text-[#00CCFF]">
-                    {activeTab === 'owned' ? owned.length : onHire.length}
-                  </div>
-                  <div className="font-body text-[#E4F3F7]/70 text-sm tracking-widest uppercase">
-                    {activeTab === 'owned' ? 'Owned' : 'On Hire'}
-                  </div>
-                  <div className="font-body text-[#E4F3F7]/50 text-xs tracking-wider">
-                    Total: {owned.length + onHire.length}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-
-          {/* Note */}
-          <p className="mt-8 font-body text-[#E4F3F7]/40 text-xs tracking-wider">
-            * Equipment inventory as of company registration. Subject to updates. Additional specialist equipment sourced on project-specific basis.
-          </p>
-        </div>
       </div>
     </section>
   )

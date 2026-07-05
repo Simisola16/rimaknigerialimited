@@ -18,10 +18,10 @@ const memberImages = {
 
 const teamMembers = [
   {
-    name: 'Adigun M.A.',
+    name: 'Adigun A.A.',
     role: 'Managing Director',
-    quals: 'Dip (Const Mgnt)',
-    initial: 'AM',
+    quals: 'BSc, PGD, MTech (Maths & Statitics)',
+    initial: 'AA',
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
   },
@@ -33,18 +33,11 @@ const teamMembers = [
     color: '#E4F3F7',
     accentBg: 'rgba(228,243,247,0.06)',
   },
-  {
-    name: 'Engr. Bello Amodu Ademola',
-    role: 'Technical Director',
-    quals: 'B.Tech (Civil) · MASCE · MICE · COREN',
-    initial: 'BA',
-    color: '#00CCFF',
-    accentBg: 'rgba(0,204,255,0.08)',
-  },
+
   {
     name: 'Eko Oluwaseyi',
-    role: 'Product Manager',
-    quals: 'BSc, MSc Accounting · MNIM · Financial Director',
+    role: 'Financial Director',
+    quals: 'BSc, MSc Accounting · MNIM',
     initial: 'EO',
     color: '#E4F3F7',
     accentBg: 'rgba(228,243,247,0.06)',
@@ -56,16 +49,6 @@ const teamMembers = [
     initial: 'BG',
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
-  },
-  {
-    name: 'Engr. Bello Amodu Ademola',
-    role: 'Project Manager',
-    quals: 'B.Tech Civil · MASCE · MICE · COREN',
-    years: 18,
-    badge: 'Senior',
-    initial: 'BA',
-    color: '#E4F3F7',
-    accentBg: 'rgba(228,243,247,0.06)',
   },
   {
     name: 'Fashola Kolapo',

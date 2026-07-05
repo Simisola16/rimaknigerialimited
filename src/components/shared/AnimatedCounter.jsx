@@ -5,7 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export default function AnimatedCounter({ end, suffix = '', prefix = '', duration = 2, trigger }) {
+export default function AnimatedCounter({ end, suffix = '', prefix = '', duration = 2, trigger, className = 'stat-number' }) {
   const counterRef = useRef(null)
   const hasRun = useRef(false)
 
@@ -24,8 +24,10 @@ export default function AnimatedCounter({ end, suffix = '', prefix = '', duratio
       }
     })
 
+    const triggerEl = typeof trigger === 'string' ? document.querySelector(trigger) : (trigger || el)
+
     ScrollTrigger.create({
-      trigger: trigger || el,
+      trigger: triggerEl,
       start: 'top 85%',
       onEnter: () => {
         if (!hasRun.current) {
@@ -39,7 +41,7 @@ export default function AnimatedCounter({ end, suffix = '', prefix = '', duratio
   }, { scope: counterRef })
 
   return (
-    <span ref={counterRef} className="stat-number">
+    <span ref={counterRef} className={className}>
       {prefix}0{suffix}
     </span>
   )
