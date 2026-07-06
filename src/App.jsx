@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { useLenis } from './hooks/useLenis'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Gallery from './pages/Gallery';
 // Shared
 import Navbar from './components/shared/Navbar'
@@ -23,6 +23,29 @@ import ContactSection from './components/Contact/ContactSection'
 import Footer from './components/Footer/Footer'
 
 gsap.registerPlugin(ScrollTrigger)
+
+function RouteMetadata() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/gallery') {
+      document.title = "Project Gallery | Rimak Nigeria Limited";
+      const descMeta = document.querySelector('meta[name="description"]');
+      if (descMeta) {
+        descMeta.setAttribute('content', 'Browse through the gallery of completed and ongoing construction, engineering, and infrastructure projects by Rimak Nigeria Limited.');
+      }
+    } else {
+      document.title = "Rimak Nigeria Limited | Civil Engineering & Construction";
+      const descMeta = document.querySelector('meta[name="description"]');
+      if (descMeta) {
+        descMeta.setAttribute('content', 'Rimak Nigeria Limited is a premier civil engineering, building construction, MEP contracting, and project management company in Lagos, Nigeria. RC 9484253.');
+      }
+    }
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  return null;
+}
 
 function App() {
   // Initialize Lenis smooth scroll (synced with GSAP)
@@ -81,6 +104,7 @@ function App() {
 
   return (
 <BrowserRouter>
+  <RouteMetadata />
   <div className="relative">
     {/* Fixed UI */}
     <ScrollProgress />

@@ -91,17 +91,17 @@ export default function HeroSection() {
         </div>
 
         {/* Main Heading */}
-        <div ref={headingRef} className="overflow-hidden mb-6">
-          <div className="hero-line font-display text-[clamp(3.5rem,10vw,9rem)] leading-none text-[#F5F2EE] tracking-tight">
+        <h1 ref={headingRef} className="overflow-hidden mb-6">
+          <span className="block hero-line font-display text-[clamp(3.5rem,10vw,9rem)] leading-none text-[#F5F2EE] tracking-tight">
             RIMAK
-          </div>
-          <div className="hero-line font-display text-[clamp(3.5rem,10vw,9rem)] leading-none tracking-tight flex items-end gap-4">
+          </span>
+          <span className="block hero-line font-display text-[clamp(3.5rem,10vw,9rem)] leading-none tracking-tight flex items-end gap-4">
             <span className="text-gradient-gold">NIGERIA</span>
-          </div>
-          <div className="hero-line font-display text-[clamp(3.5rem,10vw,9rem)] leading-none text-[#F5F2EE] tracking-tight">
+          </span>
+          <span className="block hero-line font-display text-[clamp(3.5rem,10vw,9rem)] leading-none text-[#F5F2EE] tracking-tight">
             LIMITED
-          </div>
-        </div>
+          </span>
+        </h1>
 
         {/* Tagline */}
         <div ref={taglineRef} className="mb-4">
