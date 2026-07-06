@@ -14,6 +14,7 @@ const memberImages = {
   'Fashola Kolapo': '/Fashola Kolapo.jpeg',
   'Engr. Lawal A.A.': '/Lawal Ajetunmobi Abiodun.jpeg',
   'Ehis Odunayo': '/Ehis Odunayo.jpeg',
+  'Adigun A.A.': '/Adigun A.A..jpeg',
 }
 
 const teamMembers = [
