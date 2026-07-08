@@ -7,14 +7,15 @@ gsap.registerPlugin(ScrollTrigger)
 
 // Map member names to their public-folder images
 const memberImages = {
-  'Eko Oluwaseyi': '/Eko Oluwaseyi.jpeg',
-  'Babalola Gabriel': '/Babalola Gabriel.jpeg',
+  'Eko Oluwaseyi': '/Eko Oluwaseyi.png',
+  'Babalola Gabriel': '/Babalola Gabriel.png',
   'Shuaib Lukman': '/Lukman Shuaib.jpeg',
-  'Akinyode Samuel': '/Akinyode Samuel.jpeg',
-  'Fashola Kolapo': '/Fashola Kolapo.jpeg',
+  'Akinyode Samuel': '/Akinyode Samuel.png',
+  'Fashola Kolapo': '/Fashola Kolapo.png',
   'Engr. Lawal A.A.': '/Lawal Ajetunmobi Abiodun.jpeg',
-  'Ehis Odunayo': '/Ehis Odunayo.jpeg',
-  'Adigun A.A.': '/Adigun A.A..jpeg',
+  'Ehis Odunayo': '/Eshin Odunayo.png',
+  'Adigun A.A.': '/Adigun A.A..png',
+  'Rafiu Idris': '/Rafiu Idris.png',
 }
 
 const teamMembers = [
