@@ -367,10 +367,8 @@ function ProjectCard({ project, index }) {
           {/* Bottom stats */}
           <div>
             <div className="grid grid-cols-3 gap-6 pt-6 border-t border-[#E4F3F7]/10 mt-6">
-              <div>
-                <div className="font-display text-[#00CCFF] text-xl mb-1">{project.value}</div>
-                <div className="font-body text-[#E4F3F7]/60 text-[0.65rem] tracking-widest uppercase">Contract Value</div>
-              </div>
+              
+              
               <div>
                 <div className="font-display text-[#FFFFFF] text-xl mb-1">{project.duration}</div>
                 <div className="font-body text-[#E4F3F7]/60 text-[0.65rem] tracking-widest uppercase">Duration</div>
