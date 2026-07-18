@@ -34,6 +34,29 @@ const broadcastingImages = [
   '/Broadcasting26.jpeg',
 ]
 
+// Iwo 4-Bedroom Apartment project images
+const iwoImages = [
+  '/iwo.jpeg',
+  '/iwo2.jpeg',
+  '/iwo3.jpeg',
+  '/iwo4.jpeg',
+  '/iwo5.jpeg',
+  '/iwo6.jpeg',
+  '/iwo7.jpeg',
+  '/iwo8.jpeg',
+  '/iwo9.jpeg',
+  '/iwo10.jpeg',
+  '/iwo12.jpeg',
+  '/iwo13.jpeg',
+  '/iwo14.jpeg',
+  '/iwo15.jpeg',
+  '/iwo16.jpeg',
+  '/iwo17.jpeg',
+  '/iwo18.jpeg',
+  '/iwo19.jpeg',
+  '/iwo20.jpeg',
+]
+
 const projects = [
   {
     id: 'proj-1',
@@ -48,7 +71,7 @@ const projects = [
     category: 'Residential Construction',
     scope:
       'Full construction of a luxury 4-bedroom apartment including structural works, finishes, MEP installations, external landscaping, and boundary fencing.',
-    images: null,
+    images: iwoImages,
   },
   {
     id: 'proj-2',
@@ -68,7 +91,8 @@ const projects = [
 ]
 
 // ─── Gallery Modal ───────────────────────────────────────────────────────────
-function GalleryModal({ images, onClose, initialIndex = 0 }) {
+function GalleryModal({ project, onClose, initialIndex = 0 }) {
+  const { images, title, client, location } = project
   const [current, setCurrent] = useState(initialIndex)
   const overlayRef = useRef()
 
@@ -122,10 +146,10 @@ function GalleryModal({ images, onClose, initialIndex = 0 }) {
             Construction Progress
           </p>
           <h3 className="font-display text-white text-lg leading-tight">
-            Gate House &amp; Perimeter Fence
+            {title}
           </h3>
           <p className="font-body text-[#E4F3F7]/50 text-xs mt-0.5">
-            Broadcasting Corporation of Oyo State · Ibadan, Oyo State
+            {client} · {location}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -163,7 +187,7 @@ function GalleryModal({ images, onClose, initialIndex = 0 }) {
           <img
             key={current}
             src={images[current]}
-            alt={`Broadcasting Corporation construction progress – image ${current + 1}`}
+            alt={`${title} construction progress – image ${current + 1}`}
             className="max-h-[65vh] max-w-full object-contain rounded-sm shadow-2xl"
             style={{ animation: 'fadeSlide 0.3s ease' }}
           />
@@ -260,7 +284,7 @@ function ProjectCard({ project, index }) {
     <>
       {galleryOpen && hasImages && (
         <GalleryModal
-          images={project.images}
+          project={project}
           onClose={() => setGalleryOpen(false)}
         />
       )}
@@ -277,7 +301,7 @@ function ProjectCard({ project, index }) {
             <>
               <img
                 src={coverImage}
-                alt="Construction of Gate House & Perimeter Fence – Broadcasting Corporation"
+                alt={`${project.title} – ${project.client}`}
                 className="w-full h-full object-cover opacity-40 group-hover:opacity-55 transition-opacity duration-700 scale-105 group-hover:scale-100"
                 style={{ transition: 'opacity 0.7s ease, transform 0.9s ease' }}
               />
@@ -354,7 +378,7 @@ function ProjectCard({ project, index }) {
                   <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
                 <p className="font-body text-[#00CCFF]/80 text-xs leading-relaxed">
-                  The images below document the <strong className="text-[#00CCFF]">building construction process</strong> — from foundation to completion of the Gate House &amp; Perimeter Fence.
+                  The images below document the <strong className="text-[#00CCFF]">building construction process</strong> — from foundation to completion of the {project.title}.
                 </p>
               </div>
             )}
