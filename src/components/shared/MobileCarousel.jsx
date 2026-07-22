@@ -21,7 +21,7 @@ import { motion, useMotionValue, useAnimation } from 'framer-motion';
  *   so GSAP-driven horizontal scroll / pinning works without interference.
  */
 const MobileCarousel = forwardRef(function MobileCarousel(
-  { children, className },
+  { children, className, autoPlay = true },
   forwardedRef
 ) {
   /* ── Flatten children, strip desktop-only spacers (hidden md:block) ── */
@@ -97,6 +97,7 @@ const MobileCarousel = forwardRef(function MobileCarousel(
   /* ── Auto-scroll ── */
   const scheduleNext = useCallback(() => {
     clearTimeout(autoTimerRef.current);
+    if (!autoPlay) return;
     autoTimerRef.current = window.setTimeout(() => {
       if (!pauseRef.current) {
         setActiveIndex((prev) => {
@@ -111,13 +112,13 @@ const MobileCarousel = forwardRef(function MobileCarousel(
       scheduleNext();
     }, 4000);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count, controls]);
+  }, [count, controls, autoPlay]);
 
   useEffect(() => {
-    if (!isMobile || count <= 1) return;
+    if (!isMobile || count <= 1 || !autoPlay) return;
     scheduleNext();
     return () => clearTimeout(autoTimerRef.current);
-  }, [isMobile, count, scheduleNext]);
+  }, [isMobile, count, scheduleNext, autoPlay]);
 
   const pauseAutoScroll = () => { pauseRef.current = true; };
   const resumeAutoScroll = () => {
