@@ -55,7 +55,7 @@ const teamMembers = [
   {
     name: 'Fashola Kolapo',
     role: 'Project Manager',
-    quals: 'B.Tech Building Tech · NIOB · CORBON',
+    quals: 'B.Tech Building Tech · MNIOB · CORBON',
     years: 15,
     badge: 'Senior',
     initial: 'FK',
