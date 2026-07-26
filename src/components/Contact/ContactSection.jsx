@@ -84,6 +84,8 @@ function FormField({ label, id, children, className = '' }) {
 export default function ContactSection() {
   const sectionRef = useRef()
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [formData, setFormData] = useState({
     name: '', phone: '', email: '', service: '', message: '',
   })
@@ -99,9 +101,26 @@ export default function ContactSection() {
     })
   }, { scope: sectionRef })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send message. Please try again.')
+      }
+      setSubmitted(true)
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -287,18 +306,41 @@ export default function ContactSection() {
                     )}
                   </FormField>
 
+                  {error && (
+                    <motion.p
+                      className="font-body text-red-400 text-sm text-center bg-red-500/10 border border-red-500/30 rounded-sm px-4 py-3"
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      {error}
+                    </motion.p>
+                  )}
+
                   <motion.button
                     type="submit"
                     className="btn-primary w-full justify-center"
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
+                    whileHover={loading ? {} : { scale: 1.01 }}
+                    whileTap={loading ? {} : { scale: 0.99 }}
                     id="contact-submit"
+                    disabled={loading}
+                    style={{ opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
                   >
-                    Send Message
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="22" y1="2" x2="11" y2="13" />
-                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                    </svg>
+                    {loading ? (
+                      <>
+                        <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                        </svg>
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="22" y1="2" x2="11" y2="13" />
+                          <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                      </>
+                    )}
                   </motion.button>
 
                   <p className="font-body text-[#E4F3F7]/40 text-xs text-center">
