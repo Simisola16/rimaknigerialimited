@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SocialLinks from '../shared/SocialLinks'
 
 const quickLinks = [
   { href: '#about', label: 'About Us' },
@@ -58,16 +59,10 @@ export default function Footer() {
               <p className="font-body text-xs text-[#C4B8A8]/60 tracking-wider">Lagos State, Nigeria</p>
             </div>
 
-            {/* Social placeholders */}
-            <div className="flex gap-3 mt-6">
-              {['LI', 'FB', 'TW', 'IG'].map((social) => (
-                <div
-                  key={social}
-                  className="w-8 h-8 border border-[#C4B8A8]/20 rounded-sm flex items-center justify-center text-[#C4B8A8]/40 text-[0.6rem] font-body tracking-wider cursor-pointer hover:border-[#D4861A]/40 hover:text-[#D4861A] transition-colors duration-200"
-                >
-                  {social}
-                </div>
-              ))}
+            {/* Social Links */}
+            <div className="mt-6">
+              <p className="font-body text-xs text-[#D4861A]/70 uppercase tracking-widest mb-3 font-semibold">Connect With Us</p>
+              <SocialLinks variant="footer" />
             </div>
           </div>
 

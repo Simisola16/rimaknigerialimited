@@ -10,7 +10,7 @@ const memberImages = {
   'Eko Oluwaseyi': '/Eko Oluwaseyi.png',
   'Babalola Gabriel': '/Babalola Gabriel.png',
   'Shuaib Lukman': '/Lukman Shuaib.jpeg',
-  'Akinyode Samuel': '/Akinyode Samuel.png',
+  'Ogunjobi Michael': '/Ogunjobi Michael.jpg',
   'Fashola Kolapo': '/Fashola Kolapo.png',
   'Engr. Lawal A.A.': '/Lawal Ajetunmobi Abiodun.jpeg',
   'Ehis Odunayo': '/Eshin Odunayo.png',
@@ -73,12 +73,12 @@ const teamMembers = [
     accentBg: 'rgba(228,243,247,0.06)',
   },
   {
-    name: 'Akinyode Samuel',
+    name: 'Ogunjobi Michael',
     role: 'Procurement Manager',
-    quals: 'HND · MNIQS · RQS',
+    quals: 'BSc · PGD · Quantity surveying',
     years: 10,
     badge: 'Senior',
-    initial: 'AS',
+    initial: 'OM',
     color: '#00CCFF',
     accentBg: 'rgba(0,204,255,0.08)',
   },
@@ -127,6 +127,13 @@ const cardVariants = {
 
 function ManagementCard({ person }) {
   const photo = memberImages[person.name]
+  const [imgError, setImgError] = useState(false)
+
+  useEffect(() => {
+    setImgError(false)
+  }, [person.name])
+
+  const showPhoto = photo && !imgError
 
   return (
     <div className="w-full">
@@ -142,7 +149,7 @@ function ManagementCard({ person }) {
 
         {/* Avatar — photo or initials */}
         <div className="mb-8 flex justify-center">
-          {photo ? (
+          {showPhoto ? (
             <div className="relative">
               {/* Outer glow ring */}
               <div
@@ -161,6 +168,7 @@ function ManagementCard({ person }) {
                 <img
                   src={photo}
                   alt={person.name}
+                  onError={() => setImgError(true)}
                   className="w-full h-full object-cover object-top"
                   style={{ filter: 'contrast(1.05) brightness(0.96)' }}
                 />

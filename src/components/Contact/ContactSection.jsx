@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import Slider from '../shared/Slider'
+import SocialLinks from '../shared/SocialLinks'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -193,6 +194,14 @@ export default function ContactSection() {
                   <div className="font-body text-[#E4F3F7]/70 text-xs mt-1">Lagos State, Nigeria</div>
                 </div>
               </div>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="mt-8">
+              <p className="font-body text-xs tracking-[0.15em] text-[#00CCFF] uppercase mb-3 font-semibold">
+                Follow Us & Direct Channels
+              </p>
+              <SocialLinks variant="contact" />
             </div>
           </div>
 

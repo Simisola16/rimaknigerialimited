@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import SocialLinks from './SocialLinks'
 
 const navLinks = [
   { href: '#about', label: 'About' },
@@ -298,6 +299,12 @@ export default function Navbar() {
               >
                 Get In Touch
               </motion.a>
+
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <span className="text-[#00CCFF]/60 text-[0.65rem] tracking-[0.2em] uppercase font-body">Follow Rimak</span>
+                <SocialLinks variant="nav" className="justify-center" />
+              </div>
+
               <p className="text-center text-[#E4F3F7]/40 text-[0.65rem] tracking-widest uppercase mt-4">
                 RC 9484253
               </p>

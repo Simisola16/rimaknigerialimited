@@ -8,6 +8,7 @@ import Gallery from './pages/Gallery';
 // Shared
 import Navbar from './components/shared/Navbar'
 import ScrollProgress from './components/shared/ScrollProgress'
+import FloatingSocials from './components/shared/FloatingSocials'
 
 // Sections
 import HeroSection from './components/Hero/HeroSection'
@@ -109,6 +110,7 @@ function App() {
     {/* Fixed UI */}
     <ScrollProgress />
     <Navbar />
+    <FloatingSocials />
     <Routes>
       <Route path="/" element={
         <main>
